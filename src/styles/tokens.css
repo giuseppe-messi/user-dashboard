@@ -1,0 +1,67 @@
+:root {
+  /* Colors */
+  --color-orange: #fb6232;
+  --color-admin: #003569;
+  --color-editor: #269085;
+  --color-viewer: #5993b9;
+  --color-guest: #9f009f;
+  --color-owner: #ffffff;
+
+  --color-border-card: #d3d3dc;
+  --color-card-bg: #ffffff;
+  --color-text-muted: #63666a;
+
+  /* Semantic color aliases */
+  --color-white: var(--color-card-bg);
+  --color-border: var(--color-border-card);
+  --color-text-primary: #222222;
+  --color-background: #eeeeee;
+
+  /* Radius */
+  --radius-card: 20px;
+  --radius-badge: 8px;
+  --radius-button: 20px;
+
+  /* Spacing scale */
+  --space-4: 4px;
+  --space-8: 8px;
+  --space-10: 10px;
+  --space-12: 12px;
+  --space-16: 16px;
+  --space-20: 20px;
+  --space-24: 24px;
+  --space-30: 30px;
+
+  /* Elevation */
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.08);
+  --shadow-md: 0 6px 18px rgba(0, 0, 0, 0.12);
+
+  /* Typography tokens */
+  --font-poppins: "Poppins", sans-serif;
+
+  /* Font weights */
+  --font-weight-light: 300;
+  --font-weight-regular: 400;
+  --font-weight-medium: 500;
+  --font-weight-bold: 700;
+
+  /* Title M */
+  --title-m-size: 24px;
+  --title-m-line: 130%;
+  --title-m-weight: var(--font-weight-medium);
+
+  /* Text L */
+  --text-l-size: 16px;
+  --text-l-line: 100%;
+  --text-l-weight: var(--font-weight-regular);
+
+  /* Text M */
+  --text-m-size: 14px;
+  --text-m-line: 170%;
+  --text-m-weight: var(--font-weight-regular);
+
+  /* Text S */
+  --text-s-size: 12px;
+  --text-s-line: 170%;
+  --text-s-weight: var(--font-weight-regular);
+}

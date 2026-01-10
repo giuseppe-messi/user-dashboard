@@ -1,0 +1,21 @@
+import React from "react";
+
+type Props = {
+  onClearError?: () => void;
+};
+
+export const ErrorPage: React.FC<Props> = ({ onClearError }) => {
+  const handleBackHome = () => {
+    onClearError?.();
+    window.location.href = "/";
+  };
+
+  return (
+    <div className="container">
+      <h2 className="title-m">Something is not right!</h2>
+      <button className="button-m" onClick={handleBackHome}>
+        Go Back Home
+      </button>
+    </div>
+  );
+};

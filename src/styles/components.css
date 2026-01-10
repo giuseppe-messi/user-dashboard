@@ -1,0 +1,163 @@
+/* Card */
+.card {
+  width: 247px;
+  background: var(--color-white);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-card);
+  padding: var(--space-16);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-8);
+}
+
+/* Button - Large */
+.button-l {
+  height: 78px;
+  padding-left: var(--space-30);
+  padding-right: var(--space-30);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-8);
+  background: var(--color-orange);
+  color: var(--color-white);
+  border: none;
+  border-radius: var(--radius-button);
+  font-family: var(--font-poppins);
+  font-size: var(--text-l-size);
+  font-weight: var(--text-l-weight);
+  line-height: var(--text-l-line);
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.button-l:hover {
+  background-color: #fa5420;
+}
+
+/* Button - Medium */
+.button-m {
+  height: 48px;
+  padding-left: var(--space-30);
+  padding-right: var(--space-30);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-8);
+  background: var(--color-orange);
+  color: var(--color-white);
+  border: none;
+  border-radius: var(--radius-button);
+  font-family: var(--font-poppins);
+  font-size: var(--text-m-size);
+  font-weight: var(--text-m-weight);
+  line-height: var(--text-m-line);
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.button-m:hover {
+  background-color: #fa5420;
+}
+
+/* Badge */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-8) var(--space-16);
+  gap: var(--space-10);
+  border-radius: var(--radius-badge);
+  font-family: var(--font-poppins);
+  font-size: var(--text-s-size);
+  font-weight: var(--text-s-weight);
+  line-height: var(--text-s-line);
+  color: var(--color-owner);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* Badge variants */
+.badge-admin {
+  background: var(--color-admin);
+}
+
+.badge-editor {
+  background: var(--color-editor);
+}
+
+.badge-viewer {
+  background: var(--color-viewer);
+}
+
+.badge-guest {
+  background: var(--color-guest);
+}
+
+.badge-owner {
+  background: var(--color-owner);
+  color: var(--color-admin);
+}
+
+/* Title block */
+.title-block {
+  padding-top: var(--space-8);
+  padding-bottom: var(--space-8);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-8);
+}
+
+/* Text - Role */
+.text-role {
+  font-family: var(--font-poppins);
+  font-size: var(--text-m-size);
+  font-weight: var(--text-m-weight);
+  line-height: var(--text-m-line);
+  color: var(--color-text-muted);
+}
+
+/* Text - Team label */
+.text-team-label {
+  font-family: var(--font-poppins);
+  font-size: var(--text-s-size);
+  font-weight: var(--text-s-weight);
+  line-height: var(--text-s-line);
+  color: var(--color-text-muted);
+}
+
+/* Text - Website */
+.text-website {
+  font-family: var(--font-poppins);
+  font-size: var(--text-s-size);
+  font-weight: var(--text-s-weight);
+  line-height: var(--text-s-line);
+  color: var(--color-text-muted);
+}
+
+/* Text - Contact label */
+.text-contact-label {
+  font-family: var(--font-poppins);
+  font-size: var(--text-s-size);
+  font-weight: var(--text-s-weight);
+  line-height: var(--text-s-line);
+  color: var(--color-text-muted);
+}
+
+/* Text - Email */
+.text-email {
+  font-family: var(--font-poppins);
+  font-size: var(--text-s-size);
+  font-weight: var(--text-s-weight);
+  line-height: var(--text-s-line);
+  color: var(--color-orange);
+  text-decoration: underline;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-16);
+  align-items: center;
+  text-align: center;
+}
