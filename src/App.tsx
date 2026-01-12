@@ -8,7 +8,7 @@ import { routes } from "./routes";
 const App = () => (
   <ErrorBoundary fallback={ErrorPage}>
     <Router>
-      <Suspense fallback={<LoadingSpinner size="lg" />}>
+      <Suspense fallback={<LoadingSpinner size="lg" fullScreen />}>
         <Routes>
           {routes.map(({ path, Component }) => (
             <Route key={path} path={path} element={<Component />} />

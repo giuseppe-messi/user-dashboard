@@ -1,12 +1,5 @@
 import { useState } from "react";
-
-export interface UserData {
-  name: string;
-  role: string;
-  badgeType: "admin" | "editor" | "viewer" | "guest" | "owner";
-  team: string;
-  email: string;
-}
+import { UserData } from "../types/user";
 
 export const useUserModal = () => {
   const [selectedUser, setSelectedUser] = useState<UserData | null>(null);

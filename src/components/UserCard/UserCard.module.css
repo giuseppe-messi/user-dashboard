@@ -1,7 +1,3 @@
-.userCard {
-  gap: var(--space-10);
-}
-
 .userInfo {
   display: flex;
   flex-direction: column;

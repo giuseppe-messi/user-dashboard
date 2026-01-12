@@ -4,6 +4,7 @@ export type LoadingSpinnerSize = (typeof LOADING_SPINNER_SIZES)[number];
 interface LoadingSpinnerProps {
   size?: LoadingSpinnerSize;
   color?: string;
+  fullScreen?: boolean;
 }
 
 const sizeMap: Record<LoadingSpinnerSize, number> = {
@@ -14,36 +15,52 @@ const sizeMap: Record<LoadingSpinnerSize, number> = {
 
 export function LoadingSpinner({
   size = "md",
-  color = "currentColor"
+  color = "currentColor",
+  fullScreen = false
 }: LoadingSpinnerProps) {
-  return (
-    <div>
-      <svg
-        aria-label="Loading"
-        height={sizeMap[size]}
-        role="status"
-        viewBox="0 0 24 24"
-        width={sizeMap[size]}
+  const spinner = (
+    <svg
+      aria-label="Loading"
+      height={sizeMap[size]}
+      role="status"
+      viewBox="0 0 24 24"
+      width={sizeMap[size]}
+    >
+      <circle
+        cx="12"
+        cy="12"
+        fill="none"
+        r="10"
+        stroke={color}
+        strokeDasharray="31.4 31.4"
+        strokeWidth="4"
       >
-        <circle
-          cx="12"
-          cy="12"
-          fill="none"
-          r="10"
-          stroke={color}
-          strokeDasharray="31.4 31.4"
-          strokeWidth="4"
-        >
-          <animateTransform
-            attributeName="transform"
-            dur="1s"
-            from="0 12 12"
-            repeatCount="indefinite"
-            to="360 12 12"
-            type="rotate"
-          />
-        </circle>
-      </svg>
-    </div>
+        <animateTransform
+          attributeName="transform"
+          dur="1s"
+          from="0 12 12"
+          repeatCount="indefinite"
+          to="360 12 12"
+          type="rotate"
+        />
+      </circle>
+    </svg>
   );
+
+  if (fullScreen) {
+    return (
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          minHeight: "100vh"
+        }}
+      >
+        {spinner}
+      </div>
+    );
+  }
+
+  return <div>{spinner}</div>;
 }
