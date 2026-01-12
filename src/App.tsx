@@ -1,35 +1,22 @@
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
-import { lazy, Suspense } from "react";
+import { Suspense } from "react";
 import { ErrorPage } from "./pages/ErrorPage/ErrorPage";
-import { ErrorBoundary, FallbackProps } from "./ErrorBoundary";
+import { ErrorBoundary } from "./ErrorBoundary";
 import { LoadingSpinner } from "./components/LoadingSpinner/LoadingSpinner";
+import { routes } from "./routes";
 
-const Home = lazy(() => import("./pages/Home/Home"));
-const NotFound = lazy(() => import("./pages/NotFound/NotFound"));
-
-const ErrorPageFallback = ({ onClearError }: FallbackProps) => (
-  <ErrorPage onClearError={onClearError} />
+const App = () => (
+  <ErrorBoundary fallback={ErrorPage}>
+    <Router>
+      <Suspense fallback={<LoadingSpinner size="lg" />}>
+        <Routes>
+          {routes.map(({ path, Component }) => (
+            <Route key={path} path={path} element={<Component />} />
+          ))}
+        </Routes>
+      </Suspense>
+    </Router>
+  </ErrorBoundary>
 );
-
-export const APP_ROUTES = {
-  home: "/"
-};
-
-function App() {
-  return (
-    <ErrorBoundary fallback={ErrorPageFallback}>
-      <Router>
-        <Suspense fallback={<LoadingSpinner size="lg" />}>
-          <Routes>
-            <Route>
-              <Route element={<Home />} path={APP_ROUTES.home} />
-              <Route element={<NotFound />} path="*" />
-            </Route>
-          </Routes>
-        </Suspense>
-      </Router>
-    </ErrorBoundary>
-  );
-}
 
 export default App;

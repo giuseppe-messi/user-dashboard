@@ -1,0 +1,78 @@
+.modalContent {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap-s);
+}
+
+.userInfo {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap-xxs);
+  margin-bottom: 2px;
+}
+
+.userName {
+  font-size: var(--title-m-size);
+  font-weight: var(--font-weight-medium);
+  line-height: 130%;
+  letter-spacing: 0;
+  color: var(--color-text-heading);
+  margin: 0;
+}
+
+.role {
+  font-size: var(--text-l-size);
+  font-weight: var(--font-weight-regular);
+  line-height: 170%;
+  letter-spacing: 0.32px;
+  color: var(--color-text-muted);
+  margin: 0;
+}
+
+.detailRow {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.label {
+  font-size: var(--text-m-size);
+  font-weight: var(--font-weight-regular);
+  line-height: 170%;
+  letter-spacing: 0;
+  color: var(--color-text-muted);
+}
+
+.value {
+  font-size: var(--text-m-size);
+  font-weight: var(--font-weight-medium);
+  line-height: 170%;
+  letter-spacing: 0;
+  color: var(--color-text-muted);
+}
+
+.email {
+  font-size: var(--text-m-size);
+  font-weight: var(--font-weight-medium);
+  line-height: 170%;
+  letter-spacing: 0;
+  color: var(--color-orange);
+  text-decoration: underline;
+}
+
+.email:hover {
+  text-decoration: underline;
+}
+
+.otherDetails {
+  font-size: var(--text-m-size);
+  font-weight: var(--font-weight-medium);
+  line-height: 170%;
+  letter-spacing: 0;
+  color: var(--color-text-muted);
+  margin: 0;
+}
+
+.closeButton {
+  align-self: end;
+}

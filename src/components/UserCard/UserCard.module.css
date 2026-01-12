@@ -1,0 +1,88 @@
+.userCard {
+  gap: var(--space-10);
+}
+
+.userInfo {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.userName {
+  font-size: var(--title-m-size);
+  font-weight: var(--font-weight-medium);
+  line-height: 130%;
+  letter-spacing: 0;
+  color: var(--color-text-heading);
+  margin: 0;
+}
+
+.userRole {
+  font-size: var(--text-m-size);
+  font-weight: var(--font-weight-regular);
+  line-height: 170%;
+  letter-spacing: 0.28px;
+  color: var(--color-text-muted);
+  margin: 0;
+}
+
+.userDetails {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.detailRow {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.detailLabel {
+  font-size: var(--text-s-size);
+  font-weight: var(--font-weight-light);
+  line-height: 170%;
+  letter-spacing: 0;
+  color: var(--color-text-muted);
+}
+
+.detailValue {
+  font-size: var(--text-s-size);
+  font-weight: var(--font-weight-medium);
+  line-height: 170%;
+  letter-spacing: 0;
+  color: var(--color-text-muted);
+}
+
+.contactInfo {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.contactLabel {
+  font-size: var(--text-s-size);
+  font-weight: var(--font-weight-light);
+  line-height: 170%;
+  letter-spacing: 0;
+  color: var(--color-text-muted);
+}
+
+.contactEmail {
+  font-size: var(--text-s-size);
+  font-weight: var(--font-weight-medium);
+  line-height: 170%;
+  letter-spacing: 0;
+  color: var(--color-orange);
+  text-decoration: underline;
+}
+
+.contactEmail:hover {
+  text-decoration: underline;
+}
+
+@media (max-width: 768px) {
+  .userCard {
+    width: 100%;
+  }
+}

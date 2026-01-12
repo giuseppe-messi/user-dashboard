@@ -1,64 +1,49 @@
-.pageContainer {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 40px 20px;
+.container {
+  padding-top: 10rem;
+  padding-left: 2rem;
+  padding-right: 2rem;
 }
 
 .heroSection {
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-bottom: 48px;
+  margin-bottom: var(--gap-xl);
+  gap: var(--gap-xl);
+  max-width: 669px;
+  margin: 0 auto 42px;
+}
+
+.usersSection {
+  max-width: 1024px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap-xl);
 }
 
 .mainHeading {
-  font-family: var(--font-poppins);
   font-size: 60px;
   font-weight: var(--font-weight-bold);
   line-height: 100%;
-  letter-spacing: 0;
   text-align: center;
-  margin: 0 0 48px 0;
-  color: var(--color-text-primary);
+  margin: var(--space-10);
 }
 
 .mainHeading .gradient {
-  background: linear-gradient(90deg, #ff784e 0%, #fb347c 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+  color: var(--color-orange);
 }
 
-.searchSection {
-  margin-bottom: 32px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 20px;
+@media (max-width: 768px) {
+  .container {
+    padding-top: 4rem;
+  }
 }
 
-.searchLabel {
-  font-size: var(--text-s-size);
-  font-weight: var(--font-weight-regular);
-  letter-spacing: 1px;
-  color: var(--color-text-muted);
-  margin: 0;
-  text-transform: uppercase;
-  align-self: start;
-}
-
-.searchBar {
-  display: flex;
-  gap: 12px;
-  align-items: center;
-}
-
-.searchInput {
-  width: 320px;
-  height: 48px;
-  padding: 0 20px;
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-card);
-  font-family: var(--font-poppins);
-  font-size: var(--text-m-size);
+@media (max-width: 490px) {
+  .container {
+    padding-top: 4rem;
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
 }

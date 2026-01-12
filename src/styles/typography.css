@@ -1,29 +1,23 @@
-@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;700&display=swap");
-
 /*  Classes  */
 .title-m {
-  font-family: var(--font-poppins);
   font-size: var(--title-m-size);
   line-height: var(--title-m-line);
   font-weight: var(--title-m-weight);
 }
 
 .text-l {
-  font-family: var(--font-poppins);
   font-size: var(--text-l-size);
   line-height: var(--text-l-line);
   font-weight: var(--text-l-weight);
 }
 
 .text-m {
-  font-family: var(--font-poppins);
   font-size: var(--text-m-size);
   line-height: var(--text-m-line);
   font-weight: var(--text-m-weight);
 }
 
 .text-s {
-  font-family: var(--font-poppins);
   font-size: var(--text-s-size);
   line-height: var(--text-s-line);
   font-weight: var(--text-s-weight);

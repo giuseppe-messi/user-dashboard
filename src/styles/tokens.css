@@ -10,6 +10,7 @@
   --color-border-card: #d3d3dc;
   --color-card-bg: #ffffff;
   --color-text-muted: #63666a;
+  --color-text-heading: #1b2134;
 
   /* Semantic color aliases */
   --color-white: var(--color-card-bg);
@@ -31,6 +32,14 @@
   --space-20: 20px;
   --space-24: 24px;
   --space-30: 30px;
+
+  /* Gap scale */
+  --gap-xxs: 8px;
+  --gap-xs: 12px;
+  --gap-s: 16px;
+  --gap-m: 20px;
+  --gap-l: 24px;
+  --gap-xl: 32px;
 
   /* Elevation */
   --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.08);
@@ -64,4 +73,10 @@
   --text-s-size: 12px;
   --text-s-line: 170%;
   --text-s-weight: var(--font-weight-regular);
+
+  /* Breakpoints */
+  --breakpoint-mobile: 480px;
+  --breakpoint-tablet: 768px;
+  --breakpoint-desktop: 1024px;
+  --breakpoint-wide: 1200px;
 }
