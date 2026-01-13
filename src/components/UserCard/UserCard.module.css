@@ -31,7 +31,6 @@
 .detailRow {
   display: flex;
   flex-direction: column;
-  gap: var(--space-4);
 }
 
 .detailLabel {
@@ -53,7 +52,6 @@
 .contactInfo {
   display: flex;
   flex-direction: column;
-  gap: var(--space-4);
 }
 
 .contactLabel {

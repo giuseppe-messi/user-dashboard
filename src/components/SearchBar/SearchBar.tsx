@@ -3,16 +3,24 @@ import styles from "./SearchBar.module.css";
 
 interface SearchBarProps {
   onSearch: (query: string) => void;
+  onResetFetch: () => void;
 }
 
-export const SearchBar = ({ onSearch }: SearchBarProps) => {
+export const SearchBar = ({ onSearch, onResetFetch }: SearchBarProps) => {
   const inputRef = useRef<HTMLInputElement>(null);
 
   const handleSearch = () => {
-    if (inputRef.current) {
-      onSearch(inputRef.current.value);
-      inputRef.current.value = "";
+    if (!inputRef.current) return;
+
+    const isEmptySearch = inputRef.current.value.trim() === "";
+
+    if (isEmptySearch) {
+      onResetFetch();
+      return;
     }
+
+    onSearch(inputRef.current.value);
+    inputRef.current.value = "";
   };
 
   const handleKeyPress = (e: React.KeyboardEvent) => {
@@ -30,7 +38,7 @@ export const SearchBar = ({ onSearch }: SearchBarProps) => {
           type="text"
           placeholder="Search by name..."
           className={styles.searchInput}
-          onKeyPress={handleKeyPress}
+          onKeyDown={handleKeyPress}
         />
         <button
           className={`button-l ${styles.searchButton}`}

@@ -1,4 +1,6 @@
-export type BadgeType = "admin" | "editor" | "viewer" | "guest" | "owner";
+export const BADGE_TYPES = ["admin", "editor", "viewer"] as const;
+
+export type BadgeType = (typeof BADGE_TYPES)[number];
 
 export interface UserData {
   firstName: string;

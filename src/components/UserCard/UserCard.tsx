@@ -9,9 +9,9 @@ interface UserCardProps {
 
 export const UserCard = ({ user, onViewDetails }: UserCardProps) => {
   const fullName = `${user.firstName} ${user.lastName}`;
-  const truncatedName = truncateText(fullName, 15);
-  const truncatedRole = truncateText(user.company.title, 26);
-  const truncatedEmail = truncateText(user.email, 31);
+  const truncatedName = truncateText(fullName, 14);
+  const truncatedRole = truncateText(user.company.title, 24);
+  const truncatedEmail = truncateText(user.email, 30);
 
   return (
     <div className={`card ${styles.userCard}`}>
@@ -27,7 +27,7 @@ export const UserCard = ({ user, onViewDetails }: UserCardProps) => {
       <div className={styles.userDetails}>
         <div className={styles.detailRow}>
           <span className={styles.detailLabel}>Team:</span>
-          <span className={styles.detailValue}>{user.team}</span>
+          <span className={styles.detailValue}>{user.company.department}</span>
         </div>
       </div>
 

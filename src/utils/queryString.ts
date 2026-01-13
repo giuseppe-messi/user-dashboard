@@ -1,15 +1,22 @@
-import { Params } from "../hooks/useFetch";
+export type Params = {
+  [key: string]: string | number | boolean | Array<string | number>;
+};
 
 export const buildQueryString = (params?: Params) => {
   if (!params) return "";
 
-  const validParams = Object.entries(params).filter(
-    ([, value]) => value !== "" && value !== null && value !== undefined
-  );
+  const searchParams = new URLSearchParams();
 
-  const queryString = new URLSearchParams(
-    validParams.map(([key, value]) => [key, String(value)])
-  ).toString();
+  for (const [key, value] of Object.entries(params)) {
+    if (value === null || value === undefined || value === "") continue;
 
-  return queryString ? `?${queryString}` : "";
+    if (Array.isArray(value)) {
+      value.forEach((v) => searchParams.append(key, String(v)));
+    } else {
+      searchParams.append(key, String(value));
+    }
+  }
+
+  const query = searchParams.toString();
+  return query ? `?${query}` : "";
 };

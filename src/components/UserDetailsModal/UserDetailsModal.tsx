@@ -23,7 +23,7 @@ export const UserDetailsModal = ({ user, onClose }: UserDetailsModalProps) => {
 
       <div className={styles.detailRow}>
         <span className={styles.label}>Team:</span>
-        <span className={styles.value}>{user.team}</span>
+        <span className={styles.value}>{user.company.department}</span>
       </div>
 
       <div className={styles.detailRow}>
