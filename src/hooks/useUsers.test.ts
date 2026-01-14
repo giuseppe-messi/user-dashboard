@@ -3,6 +3,7 @@ import { renderHook, act } from "@testing-library/react";
 import { useUsers } from "../hooks/useUsers";
 import { mockUser } from "../test/mocks/sharedMocks";
 import { API_ENDPOINTS } from "../constants/api";
+import { cache } from "../hooks/useUsers";
 
 const mockResponse = {
   users: [mockUser],
@@ -13,6 +14,7 @@ const mockResponse = {
 
 describe("useUsers hook", () => {
   beforeEach(() => {
+    cache.clear();
     vi.restoreAllMocks();
 
     global.fetch = vi.fn().mockResolvedValue({
@@ -130,6 +132,27 @@ describe("useUsers hook", () => {
     });
 
     expect(result.current.error).toBe(testError);
+    expect(result.current.loading).toBe(false);
+  });
+
+  it("should use cached data on second call", async () => {
+    const { result } = renderHook(() => useUsers());
+
+    // first call, fills cache
+    await act(async () => {
+      await result.current.fetchUsers("");
+    });
+
+    (fetch as unknown as Mock).mockClear();
+
+    // second call, should hit cache
+    await act(async () => {
+      await result.current.fetchUsers("");
+    });
+
+    expect(fetch).not.toHaveBeenCalled();
+    expect(result.current.users[0].firstName).toBe("John");
+    expect(result.current.total).toBe(1);
     expect(result.current.loading).toBe(false);
   });
 });

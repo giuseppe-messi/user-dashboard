@@ -50,6 +50,18 @@ All tests can also be run using:
 
 This command creates a `/coverage` directory at the root of the project containing an HTML report that can be opened in the browser, showing the coverage percentage for each component, file, and function.
 
+![Test coverage screenshot](./assets/test-coverage.png)
+
+The last thing I worked on was adding `jest-axe` and `axe-core` to help catch accessibility issues that can easily go unnoticed during development.
+
+I introduced two small setup files:
+
+`src/test/setupTests.ts`
+and
+`src/test/testA11y.ts`
+
+These files provide a reusable helper that lets me quickly run accessibility checks against any page or component.
+
 ### Last thoughts
 
 If I didn't have the constraint of not using third-party libraries, I would have used `Axios` instead of the native `Fetch` API, mainly because I’m more comfortable with its API and I find the error handling a bit clearer.

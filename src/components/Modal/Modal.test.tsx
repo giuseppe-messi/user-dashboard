@@ -47,4 +47,13 @@ describe("Modal component", () => {
     await user.click(screen.getByText("Modal Content"));
     expect(mockOnClose).not.toHaveBeenCalled();
   });
+
+  it("should call onClose when Escape key is pressed", async () => {
+    const user = userEvent.setup();
+    renderComponent();
+
+    await user.keyboard("{Escape}");
+
+    expect(mockOnClose).toHaveBeenCalled();
+  });
 });

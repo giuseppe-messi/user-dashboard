@@ -13,7 +13,7 @@ interface DummyJSONResponse {
 
 const PAGE_SIZE = 10;
 
-const cache = new Map<string, DummyJSONResponse>();
+export const cache = new Map<string, DummyJSONResponse>();
 
 export const useUsers = () => {
   const [users, setUsers] = useState<UserData[]>([]);
