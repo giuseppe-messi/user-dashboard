@@ -2,7 +2,7 @@ import styles from "./UserCard.module.css";
 import { UserData } from "../../types/user";
 import { truncateText } from "../../utils/textUtils";
 
-interface UserCardProps {
+export interface UserCardProps {
   user: UserData;
   onViewDetails: () => void;
 }

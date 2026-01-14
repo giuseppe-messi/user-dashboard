@@ -2,7 +2,7 @@ import { UserData } from "../../types/user";
 import { buildOtherDetailsText } from "../../utils/textUtils";
 import styles from "./UserDetailsModal.module.css";
 
-interface UserDetailsModalProps {
+export interface UserDetailsModalProps {
   user: UserData;
   onClose: () => void;
 }

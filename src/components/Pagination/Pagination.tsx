@@ -1,6 +1,6 @@
 import styles from "./Pagination.module.css";
 
-interface PaginationProps {
+export interface PaginationProps {
   currentPage: number;
   totalPages: number;
   onPrevPage: () => void;

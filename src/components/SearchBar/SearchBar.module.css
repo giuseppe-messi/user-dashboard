@@ -53,3 +53,9 @@
     width: 400px;
   }
 }
+
+@media (max-width: 440px) {
+  .searchInput {
+    width: 335px;
+  }
+}

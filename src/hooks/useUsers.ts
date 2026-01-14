@@ -13,6 +13,8 @@ interface DummyJSONResponse {
 
 const PAGE_SIZE = 10;
 
+const cache = new Map<string, DummyJSONResponse>();
+
 export const useUsers = () => {
   const [users, setUsers] = useState<UserData[]>([]);
   const [total, setTotal] = useState(0);
@@ -59,12 +61,20 @@ export const useUsers = () => {
             : { q: query, limit: PAGE_SIZE, skip }
         );
 
+      // check cache first
+      const cached = cache.get(url);
+
+      if (cached) {
+        setTotal(cached.total);
+        setUsers(cached.users);
+        setLoading(false);
+        return;
+      }
+
       const res = await fetch(url, { signal: controller.signal });
       if (!res.ok) throw new Error(res.statusText);
 
       const data: DummyJSONResponse = await res.json();
-
-      setTotal(data.total);
 
       // Map API roles to badge types
       const usersWithBadges =
@@ -74,6 +84,8 @@ export const useUsers = () => {
         })) || [];
 
       setUsers(usersWithBadges);
+      setTotal(data.total);
+      cache.set(url, { ...data, users: usersWithBadges });
     } catch (e: unknown) {
       if (e instanceof Error && e.name !== "AbortError") {
         setError(e);

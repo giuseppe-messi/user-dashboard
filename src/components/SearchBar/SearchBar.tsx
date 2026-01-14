@@ -1,7 +1,7 @@
 import { useRef } from "react";
 import styles from "./SearchBar.module.css";
 
-interface SearchBarProps {
+export interface SearchBarProps {
   onSearch: (query: string) => void;
   onResetFetch: () => void;
 }
@@ -10,17 +10,15 @@ export const SearchBar = ({ onSearch, onResetFetch }: SearchBarProps) => {
   const inputRef = useRef<HTMLInputElement>(null);
 
   const handleSearch = () => {
-    if (!inputRef.current) return;
+    if (inputRef.current) {
+      const isEmptySearch = inputRef.current.value.trim() === "";
 
-    const isEmptySearch = inputRef.current.value.trim() === "";
-
-    if (isEmptySearch) {
-      onResetFetch();
-      return;
+      if (isEmptySearch) {
+        onResetFetch();
+        return;
+      }
+      onSearch(inputRef.current.value);
     }
-
-    onSearch(inputRef.current.value);
-    inputRef.current.value = "";
   };
 
   const handleKeyPress = (e: React.KeyboardEvent) => {

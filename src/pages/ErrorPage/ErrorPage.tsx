@@ -1,10 +1,8 @@
-import React from "react";
-
-type Props = {
+interface Props {
   onClearError?: () => void;
-};
+}
 
-export const ErrorPage: React.FC<Props> = ({ onClearError }) => {
+export const ErrorPage = ({ onClearError }: Props) => {
   const handleBackHome = () => {
     onClearError?.();
     window.location.href = "/";

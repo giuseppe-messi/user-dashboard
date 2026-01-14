@@ -2,7 +2,7 @@ import { UserCard } from "../UserCard/UserCard";
 import { UserData } from "../../types/user";
 import styles from "./UserGrid.module.css";
 
-interface UserGridProps {
+export interface UserGridProps {
   users: UserData[];
   onViewDetails: (user: UserData) => void;
 }
