@@ -14,8 +14,9 @@ export const Pagination = ({
   onNextPage
 }: PaginationProps) => {
   return (
-    <div className={styles.pagination}>
+    <nav className={styles.pagination} aria-label="Pagination">
       <button
+        type="button"
         className="button-m"
         disabled={currentPage === 1}
         onClick={onPrevPage}
@@ -23,17 +24,18 @@ export const Pagination = ({
         Prev
       </button>
 
-      <span className={styles.paginationInfo}>
+      <span className={styles.paginationInfo} aria-live="polite">
         Page {currentPage} of {totalPages}
       </span>
 
       <button
+        type="button"
         className="button-m"
         disabled={currentPage >= totalPages}
         onClick={onNextPage}
       >
         Next
       </button>
-    </div>
+    </nav>
   );
 };

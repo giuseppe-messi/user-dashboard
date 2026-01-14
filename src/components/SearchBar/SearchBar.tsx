@@ -29,16 +29,20 @@ export const SearchBar = ({ onSearch, onResetFetch }: SearchBarProps) => {
 
   return (
     <div className={styles.searchSection}>
-      <p className={`${styles.searchLabel} label`}>WHAT ARE YOU LOOKING FOR?</p>
+      <label htmlFor="searchInput" className={`${styles.searchLabel} label`}>
+        WHAT ARE YOU LOOKING FOR?
+      </label>
       <div className={styles.searchBar}>
         <input
           ref={inputRef}
           type="text"
+          id="searchInput"
           placeholder="Search by name..."
           className={styles.searchInput}
           onKeyDown={handleKeyPress}
         />
         <button
+          type="button"
           className={`button-l ${styles.searchButton}`}
           onClick={handleSearch}
         >

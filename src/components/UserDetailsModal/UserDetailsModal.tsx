@@ -37,7 +37,11 @@ export const UserDetailsModal = ({ user, onClose }: UserDetailsModalProps) => {
         <span className={styles.label}>Other details:</span>
         <p className={styles.otherDetails}>{buildOtherDetailsText(user)}</p>
       </div>
-      <button className={`button-m ${styles.closeButton}`} onClick={onClose}>
+      <button
+        type="button"
+        className={`button-m ${styles.closeButton}`}
+        onClick={onClose}
+      >
         Close
       </button>
     </div>

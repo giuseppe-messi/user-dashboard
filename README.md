@@ -1,6 +1,6 @@
 # Frontend Interview - Website
 
-Hi 👋,
+Hi 👋
 
 I thought I’d spend a few words explaining what I did and why, and to briefly describe my overall approach.
 
@@ -78,6 +78,10 @@ pnpm run test
 # Run tests with coverage
 pnpm run test:coverage
 ```
+
+## live link
+
+Deployed on Netlify: [https://user-portal-dashboard.netlify.app](https://user-portal-dashboard.netlify.app/)
 
 ## Figma file
 

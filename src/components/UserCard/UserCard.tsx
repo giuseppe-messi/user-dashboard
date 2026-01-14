@@ -14,7 +14,7 @@ export const UserCard = ({ user, onViewDetails }: UserCardProps) => {
   const truncatedEmail = truncateText(user.email, 30);
 
   return (
-    <div className={`card ${styles.userCard}`}>
+    <article className={`card ${styles.userCard}`}>
       <span className={`badge badge-${user.badgeType}`}>
         {user.badgeType?.toUpperCase()}
       </span>
@@ -38,9 +38,9 @@ export const UserCard = ({ user, onViewDetails }: UserCardProps) => {
         </a>
       </div>
 
-      <button className="button-m" onClick={onViewDetails}>
+      <button type="button" className="button-m" onClick={onViewDetails}>
         View details
       </button>
-    </div>
+    </article>
   );
 };

@@ -12,11 +12,13 @@ export const FilterBar = ({ activeRole, onFilterByTag }: FilterBarProps) => (
     <div className={styles.filterButtons}>
       {BADGE_TYPES.map((badge) => (
         <button
+          type="button"
           key={badge}
           className={`badge badge-${badge} ${styles.filterButton} ${
             activeRole === badge ? styles.active : ""
           }`}
           onClick={() => onFilterByTag(badge)}
+          aria-pressed={activeRole === badge}
         >
           {badge.toUpperCase()}
         </button>
