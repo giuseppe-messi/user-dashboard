@@ -9,14 +9,15 @@ export interface UserCardProps {
 
 export const UserCard = ({ user, onViewDetails }: UserCardProps) => {
   const fullName = `${user.firstName} ${user.lastName}`;
+  console.log("fullName: ", fullName);
   const truncatedName = truncateText(fullName, 14);
-  const truncatedRole = truncateText(user.company.title, 24);
+  const truncatedRole = truncateText(user.company, 24);
   const truncatedEmail = truncateText(user.email, 30);
 
   return (
     <article className={`card ${styles.userCard}`}>
-      <span className={`badge badge-${user.badgeType}`}>
-        {user.badgeType?.toUpperCase()}
+      <span className={`badge badge-${user.role}`}>
+        {user.role?.toUpperCase()}
       </span>
 
       <div className={styles.userInfo}>
@@ -27,7 +28,7 @@ export const UserCard = ({ user, onViewDetails }: UserCardProps) => {
       <div className={styles.userDetails}>
         <div className={styles.detailRow}>
           <span className={styles.detailLabel}>Team:</span>
-          <span className={styles.detailValue}>{user.company.department}</span>
+          <span className={styles.detailValue}>{user.team}</span>
         </div>
       </div>
 

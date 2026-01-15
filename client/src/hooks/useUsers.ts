@@ -4,16 +4,22 @@ import { mapBadgeToRole, mapRoleToBadge } from "../utils/roleMapper";
 import { buildQueryString } from "../utils/queryString";
 import { useRef, useState } from "react";
 
-interface DummyJSONResponse {
-  users: UserData[];
-  total: number;
-  skip: number;
-  limit: number;
+interface APIResponse {
+  data: UserData[];
+  pagination: {
+    total: number;
+    page: number;
+    limit: number;
+    skip: number;
+    totalPages: number;
+    hasMore: boolean;
+    hasPrev: boolean;
+  };
 }
 
 const PAGE_SIZE = 10;
 
-export const cache = new Map<string, DummyJSONResponse>();
+export const cache = new Map<string, APIResponse>();
 
 export const useUsers = () => {
   const [users, setUsers] = useState<UserData[]>([]);
@@ -49,7 +55,7 @@ export const useUsers = () => {
         : API_ENDPOINTS.users;
 
       const url =
-        baseUrl +
+        "http://localhost:3000/users" +
         buildQueryString(
           roleFilter
             ? {
@@ -65,8 +71,8 @@ export const useUsers = () => {
       const cached = cache.get(url);
 
       if (cached) {
-        setTotal(cached.total);
-        setUsers(cached.users);
+        setTotal(cached.pagination.total);
+        setUsers(cached.data);
         setLoading(false);
         return;
       }
@@ -74,18 +80,11 @@ export const useUsers = () => {
       const res = await fetch(url, { signal: controller.signal });
       if (!res.ok) throw new Error(res.statusText);
 
-      const data: DummyJSONResponse = await res.json();
+      const data: APIResponse = await res.json();
 
-      // Map API roles to badge types
-      const usersWithBadges =
-        data?.users.map((user) => ({
-          ...user,
-          badgeType: mapRoleToBadge(user.role)
-        })) || [];
-
-      setUsers(usersWithBadges);
-      setTotal(data.total);
-      cache.set(url, { ...data, users: usersWithBadges });
+      setUsers(data?.data);
+      setTotal(data.pagination.total);
+      cache.set(url, { ...data, data: data.data });
     } catch (e: unknown) {
       if (e instanceof Error && e.name !== "AbortError") {
         setError(e);

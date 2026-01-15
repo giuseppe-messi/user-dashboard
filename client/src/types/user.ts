@@ -3,6 +3,7 @@ export const BADGE_TYPES = ["admin", "editor", "viewer"] as const;
 export type BadgeType = (typeof BADGE_TYPES)[number];
 
 export interface UserData {
+  id: string;
   firstName: string;
   lastName: string;
   age: number;
@@ -11,27 +12,14 @@ export interface UserData {
   height: number;
   weight: number;
   eyeColor: string;
-  hair: {
-    color: string;
-    type: string;
-  };
+  hair: string;
   university: string;
-  company: {
-    title: string;
-    name: string;
-    department: string;
-  };
-  address: {
-    city: string;
-    state: string;
-    country: string;
-  };
-  crypto: {
-    coin: string;
-    network: string;
-  };
+  company: string;
+  address: string;
+  crypto?: string;
   email: string;
   role: string;
   team: string;
+  createdAt: string;
   badgeType?: BadgeType;
 }

@@ -10,8 +10,8 @@ export interface UserDetailsModalProps {
 export const UserDetailsModal = ({ user, onClose }: UserDetailsModalProps) => {
   return (
     <div className={styles.modalContent}>
-      <span className={`badge badge-${user.badgeType}`}>
-        {user.badgeType?.toUpperCase()}
+      <span className={`badge badge-${user.role}`}>
+        {user.role?.toUpperCase()}
       </span>
 
       <div className={styles.userInfo}>
