@@ -3,6 +3,7 @@ import { BadgeType, UserData } from "../types/user";
 import { mapBadgeToRole, mapRoleToBadge } from "../utils/roleMapper";
 import { buildQueryString } from "../utils/queryString";
 import { useRef, useState } from "react";
+import { api } from "../api/baseApi";
 
 interface APIResponse {
   data: UserData[];
@@ -47,44 +48,27 @@ export const useUsers = () => {
     setLastQuery(query);
     setPage(pageNumber);
 
-    const skip = (pageNumber - 1) * PAGE_SIZE;
-
     try {
-      const baseUrl = roleFilter
-        ? API_ENDPOINTS.usersFilter
-        : API_ENDPOINTS.users;
+      const { data } = await api.get("/users", { signal: controller.signal });
 
-      const url =
-        "http://localhost:3000/users" +
-        buildQueryString(
-          roleFilter
-            ? {
-                key: "role",
-                value: mapBadgeToRole(roleFilter),
-                limit: PAGE_SIZE,
-                skip
-              }
-            : { q: query, limit: PAGE_SIZE, skip }
-        );
+      // // check cache first
+      // const cached = cache.get(url);
 
-      // check cache first
-      const cached = cache.get(url);
+      // if (cached) {
+      //   setTotal(cached.pagination.total);
+      //   setUsers(cached.data);
+      //   setLoading(false);
+      //   return;
+      // }
 
-      if (cached) {
-        setTotal(cached.pagination.total);
-        setUsers(cached.data);
-        setLoading(false);
-        return;
-      }
+      // const res = await fetch(url, { signal: controller.signal });
+      // if (!res.ok) throw new Error(res.statusText);
 
-      const res = await fetch(url, { signal: controller.signal });
-      if (!res.ok) throw new Error(res.statusText);
+      // const data: APIResponse = await res.json();
 
-      const data: APIResponse = await res.json();
-
-      setUsers(data?.data);
+      setUsers(data.data);
       setTotal(data.pagination.total);
-      cache.set(url, { ...data, data: data.data });
+      // cache.set(url, { ...data, data: data.data });
     } catch (e: unknown) {
       if (e instanceof Error && e.name !== "AbortError") {
         setError(e);

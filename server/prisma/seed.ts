@@ -21,7 +21,7 @@ await prisma.user.createMany({
       address: "San Francisco, California, USA",
       crypto: "Bitcoin (BTC)",
       email: "john.doe@example.com",
-      role: "ADMIN",
+      role: "OWNER",
       team: "Engineering"
     },
     {
@@ -39,7 +39,7 @@ await prisma.user.createMany({
       address: "New York, New York, USA",
       crypto: "Ethereum (ETH)",
       email: "jane.smith@example.com",
-      role: "USER",
+      role: "EDITOR",
       team: "Product"
     },
     {
@@ -75,7 +75,7 @@ await prisma.user.createMany({
       address: "Los Angeles, California, USA",
       crypto: "Cardano (ADA)",
       email: "emily.brown@example.com",
-      role: "USER",
+      role: "VIEWER",
       team: "Design"
     },
     {
@@ -93,7 +93,7 @@ await prisma.user.createMany({
       address: "Seattle, Washington, USA",
       crypto: "Polygon (MATIC)",
       email: "david.wilson@example.com",
-      role: "USER",
+      role: "GUEST",
       team: "Research"
     },
     {
@@ -111,7 +111,7 @@ await prisma.user.createMany({
       address: "Chicago, Illinois, USA",
       crypto: "Ripple (XRP)",
       email: "sarah.martinez@example.com",
-      role: "USER",
+      role: "EDITOR",
       team: "Engineering"
     },
     {
@@ -147,7 +147,7 @@ await prisma.user.createMany({
       address: "Miami, Florida, USA",
       crypto: "Dogecoin (DOGE)",
       email: "lisa.thompson@example.com",
-      role: "USER",
+      role: "VIEWER",
       team: "Marketing"
     },
     {
@@ -183,7 +183,7 @@ await prisma.user.createMany({
       address: "Portland, Oregon, USA",
       crypto: "Polkadot (DOT)",
       email: "amanda.lee@example.com",
-      role: "USER",
+      role: "GUEST",
       team: "Design"
     },
     {
@@ -201,7 +201,7 @@ await prisma.user.createMany({
       address: "Denver, Colorado, USA",
       crypto: "Avalanche (AVAX)",
       email: "christopher.white@example.com",
-      role: "USER",
+      role: "EDITOR",
       team: "Engineering"
     },
     {
@@ -219,7 +219,7 @@ await prisma.user.createMany({
       address: "Philadelphia, Pennsylvania, USA",
       crypto: "Cosmos (ATOM)",
       email: "jessica.harris@example.com",
-      role: "USER",
+      role: "VIEWER",
       team: "Human Resources"
     },
     {
@@ -237,7 +237,7 @@ await prisma.user.createMany({
       address: "San Diego, California, USA",
       crypto: "Uniswap (UNI)",
       email: "daniel.clark@example.com",
-      role: "USER",
+      role: "GUEST",
       team: "Engineering"
     },
     {
@@ -273,7 +273,7 @@ await prisma.user.createMany({
       address: "Nashville, Tennessee, USA",
       crypto: "Stellar (XLM)",
       email: "matthew.lewis@example.com",
-      role: "USER",
+      role: "EDITOR",
       team: "Consulting"
     },
     {
@@ -291,7 +291,7 @@ await prisma.user.createMany({
       address: "Houston, Texas, USA",
       crypto: "Tezos (XTZ)",
       email: "ashley.walker@example.com",
-      role: "USER",
+      role: "VIEWER",
       team: "Marketing"
     },
     {
@@ -327,7 +327,7 @@ await prisma.user.createMany({
       address: "Atlanta, Georgia, USA",
       crypto: "Dash (DASH)",
       email: "stephanie.allen@example.com",
-      role: "USER",
+      role: "GUEST",
       team: "Design"
     },
     {
@@ -345,7 +345,7 @@ await prisma.user.createMany({
       address: "San Jose, California, USA",
       crypto: "Zcash (ZEC)",
       email: "brian.young@example.com",
-      role: "USER",
+      role: "EDITOR",
       team: "Engineering"
     },
     {
@@ -363,7 +363,7 @@ await prisma.user.createMany({
       address: "Minneapolis, Minnesota, USA",
       crypto: "VeChain (VET)",
       email: "nicole.king@example.com",
-      role: "USER",
+      role: "VIEWER",
       team: "Sales"
     },
     {
@@ -399,7 +399,7 @@ await prisma.user.createMany({
       address: "Detroit, Michigan, USA",
       crypto: "Hedera (HBAR)",
       email: "megan.lopez@example.com",
-      role: "USER",
+      role: "GUEST",
       team: "Education"
     },
     {
@@ -417,7 +417,7 @@ await prisma.user.createMany({
       address: "Raleigh, North Carolina, USA",
       crypto: "The Graph (GRT)",
       email: "ryan.hill@example.com",
-      role: "USER",
+      role: "EDITOR",
       team: "Engineering"
     },
     {
@@ -435,7 +435,7 @@ await prisma.user.createMany({
       address: "Baltimore, Maryland, USA",
       crypto: "Maker (MKR)",
       email: "lauren.scott@example.com",
-      role: "USER",
+      role: "VIEWER",
       team: "Media"
     },
     {
@@ -471,7 +471,7 @@ await prisma.user.createMany({
       address: "New Orleans, Louisiana, USA",
       crypto: "Synthetix (SNX)",
       email: "rachel.adams@example.com",
-      role: "USER",
+      role: "GUEST",
       team: "Operations"
     },
     {
@@ -489,7 +489,7 @@ await prisma.user.createMany({
       address: "Richmond, Virginia, USA",
       crypto: "Yearn Finance (YFI)",
       email: "tyler.baker@example.com",
-      role: "USER",
+      role: "EDITOR",
       team: "Design"
     },
     {
@@ -507,7 +507,7 @@ await prisma.user.createMany({
       address: "Los Angeles, California, USA",
       crypto: "Curve (CRV)",
       email: "samantha.nelson@example.com",
-      role: "USER",
+      role: "VIEWER",
       team: "Design"
     },
     {
@@ -525,7 +525,7 @@ await prisma.user.createMany({
       address: "Dallas, Texas, USA",
       crypto: "Sushi (SUSHI)",
       email: "brandon.carter@example.com",
-      role: "USER",
+      role: "GUEST",
       team: "Sales"
     },
     {
@@ -543,7 +543,7 @@ await prisma.user.createMany({
       address: "Indianapolis, Indiana, USA",
       crypto: "1inch (1INCH)",
       email: "kimberly.mitchell@example.com",
-      role: "USER",
+      role: "EDITOR",
       team: "Finance"
     },
     {
@@ -579,7 +579,7 @@ await prisma.user.createMany({
       address: "Miami, Florida, USA",
       crypto: "Enjin (ENJ)",
       email: "melissa.roberts@example.com",
-      role: "USER",
+      role: "VIEWER",
       team: "Research"
     }
   ]

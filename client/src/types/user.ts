@@ -1,4 +1,10 @@
-export const BADGE_TYPES = ["admin", "editor", "viewer"] as const;
+export const BADGE_TYPES = [
+  "admin",
+  "editor",
+  "viewer",
+  "guest",
+  "owner"
+] as const;
 
 export type BadgeType = (typeof BADGE_TYPES)[number];
 

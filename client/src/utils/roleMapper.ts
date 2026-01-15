@@ -1,10 +1,14 @@
 import type { BadgeType } from "../types/user";
 
 export const mapRoleToBadge = (role: string): BadgeType => {
+  console.log("Mapping role to badge for role:", role);
+
   const roleMap: Record<string, BadgeType> = {
     admin: "admin",
-    moderator: "editor",
-    user: "viewer"
+    editor: "editor",
+    viewer: "viewer",
+    guest: "guest",
+    owner: "owner"
   };
 
   return roleMap[role.toLowerCase()];
@@ -12,9 +16,11 @@ export const mapRoleToBadge = (role: string): BadgeType => {
 
 export const mapBadgeToRole = (badge: BadgeType): string => {
   const badgeMap: Record<BadgeType, string> = {
-    admin: "admin",
-    editor: "moderator",
-    viewer: "user"
+    admin: "ADMIN",
+    editor: "EDITOR",
+    viewer: "VIEWER",
+    guest: "GUEST",
+    owner: "OWNER"
   };
 
   return badgeMap[badge];
