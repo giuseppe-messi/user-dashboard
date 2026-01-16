@@ -1,5 +1,5 @@
 import * as z from "zod";
-import { Prisma } from "../generated/prisma/index.js";
+import { Prisma, Role } from "../generated/prisma/index.js";
 import { prisma } from "../db/prisma.js";
 import type { Express } from "express";
 
@@ -8,7 +8,10 @@ const DEFAULT_PAGE_SIZE = 30;
 
 const GetUsersQuery = z.object({
   search: z.string().trim().optional(),
-  role: z.string().trim().optional(),
+  roles: z
+    .string()
+    .transform((v) => v.split(",").map((r) => r.trim().toUpperCase()))
+    .optional(),
   team: z.string().trim().optional(),
   page: z.coerce.number().int().positive().default(1),
   limit: z.coerce
@@ -16,11 +19,7 @@ const GetUsersQuery = z.object({
     .int()
     .positive()
     .max(MAX_PAGE_SIZE)
-    .default(DEFAULT_PAGE_SIZE),
-  sortBy: z
-    .enum(["firstName", "lastName", "age", "email", "createdAt"])
-    .default("createdAt"),
-  order: z.enum(["asc", "desc"]).default("desc")
+    .default(DEFAULT_PAGE_SIZE)
 });
 
 type GetUsersQueryType = z.infer<typeof GetUsersQuery>;
@@ -36,13 +35,12 @@ export const usersController = (app: Express) => {
       });
     }
 
-    const { search, role, team, page, limit, sortBy, order } =
-      parsed.data as GetUsersQueryType;
+    const { search, roles, page, limit } = parsed.data as GetUsersQueryType;
 
     try {
       const filters: Prisma.UserWhereInput[] = [];
 
-      if (search) {
+      if (search?.length) {
         filters.push({
           OR: [
             { firstName: { contains: search, mode: "insensitive" } },
@@ -52,12 +50,17 @@ export const usersController = (app: Express) => {
         });
       }
 
-      if (role) {
-        filters.push({ role: { equals: role, mode: "insensitive" } });
-      }
+      if (roles && roles.length > 0) {
+        // Validate roles by removing any invalid entries
+        const validRoles = roles.filter((r): r is Role =>
+          Object.values(Role).includes(r as Role)
+        );
 
-      if (team) {
-        filters.push({ team: { equals: team, mode: "insensitive" } });
+        if (validRoles.length > 0) {
+          filters.push({
+            role: { in: validRoles }
+          });
+        }
       }
 
       const where: Prisma.UserWhereInput =
@@ -70,22 +73,16 @@ export const usersController = (app: Express) => {
           where,
           skip,
           take: limit,
-          orderBy: { [sortBy]: order } as Prisma.UserOrderByWithRelationInput,
+          orderBy: { id: "asc" },
           select: {
             id: true,
             firstName: true,
             lastName: true,
             email: true,
-            age: true,
-            gender: true,
             role: true,
+            position: true,
             team: true,
-            university: true,
-            company: true,
-            address: true,
-            eyeColor: true,
-            hair: true,
-            createdAt: true
+            details: true
           }
         }),
         prisma.user.count({ where })
@@ -109,5 +106,12 @@ export const usersController = (app: Express) => {
       console.error("Error fetching users:", err);
       res.status(500).json({ error: "Internal server error" });
     }
+  });
+
+  // Get available roles
+  app.get("/roles", (req, res) => {
+    res.json({
+      roles: Object.values(Role)
+    });
   });
 };

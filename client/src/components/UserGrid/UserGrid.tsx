@@ -4,7 +4,7 @@ import styles from "./UserGrid.module.css";
 
 export interface UserGridProps {
   users: UserData[];
-  onViewDetails: (user: UserData) => void;
+  onViewDetails: (userIndex: number) => void;
 }
 
 export const UserGrid = ({ users, onViewDetails }: UserGridProps) => {
@@ -14,7 +14,7 @@ export const UserGrid = ({ users, onViewDetails }: UserGridProps) => {
         <UserCard
           key={`${user.email}-${index}`}
           user={user}
-          onViewDetails={() => onViewDetails(user)}
+          onViewDetails={() => onViewDetails(index)}
         />
       ))}
     </div>

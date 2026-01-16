@@ -12,20 +12,9 @@ export interface UserData {
   id: string;
   firstName: string;
   lastName: string;
-  age: number;
-  gender: string;
-  birthDate: string;
-  height: number;
-  weight: number;
-  eyeColor: string;
-  hair: string;
-  university: string;
-  company: string;
-  address: string;
-  crypto?: string;
   email: string;
   role: string;
+  position: string;
   team: string;
-  createdAt: string;
-  badgeType?: BadgeType;
+  details: string;
 }

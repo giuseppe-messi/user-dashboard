@@ -10,7 +10,7 @@ export interface UserCardProps {
 export const UserCard = ({ user, onViewDetails }: UserCardProps) => {
   const fullName = `${user.firstName} ${user.lastName}`;
   const truncatedName = truncateText(fullName, 14);
-  const truncatedRole = truncateText(user.company, 24);
+  const truncatedPosition = truncateText(user.position, 24);
   const truncatedEmail = truncateText(user.email, 30);
 
   return (
@@ -21,7 +21,7 @@ export const UserCard = ({ user, onViewDetails }: UserCardProps) => {
 
       <div className={styles.userInfo}>
         <h3 className={styles.userName}>{truncatedName}</h3>
-        <p className={styles.userRole}>{truncatedRole}</p>
+        <p className={styles.userRole}>{truncatedPosition}</p>
       </div>
 
       <div className={styles.userDetails}>

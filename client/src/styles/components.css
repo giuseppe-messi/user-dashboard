@@ -73,6 +73,16 @@
   background-color: #fa5420;
 }
 
+button:disabled {
+  opacity: 0.8;
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+button:disabled:hover {
+  box-shadow: none;
+}
+
 /* Badge */
 .badge {
   display: inline-flex;

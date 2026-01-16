@@ -5,6 +5,7 @@ interface LoadingSpinnerProps {
   size?: LoadingSpinnerSize;
   color?: string;
   fullScreen?: boolean;
+  centered?: boolean;
 }
 
 const sizeMap: Record<LoadingSpinnerSize, number> = {
@@ -16,7 +17,8 @@ const sizeMap: Record<LoadingSpinnerSize, number> = {
 export function LoadingSpinner({
   size = "md",
   color = "currentColor",
-  fullScreen = false
+  fullScreen = false,
+  centered
 }: LoadingSpinnerProps) {
   const spinner = (
     <svg
@@ -47,20 +49,15 @@ export function LoadingSpinner({
     </svg>
   );
 
-  if (fullScreen) {
-    return (
-      <div
-        style={{
+  const wrapperStyle: React.CSSProperties | undefined =
+    fullScreen || centered
+      ? {
           display: "flex",
           justifyContent: "center",
           alignItems: "center",
-          minHeight: "100vh"
-        }}
-      >
-        {spinner}
-      </div>
-    );
-  }
+          minHeight: fullScreen ? "100vh" : "80px"
+        }
+      : undefined;
 
-  return <div>{spinner}</div>;
+  return <div style={wrapperStyle}>{spinner}</div>;
 }

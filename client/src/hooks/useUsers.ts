@@ -1,9 +1,7 @@
-import { API_ENDPOINTS } from "../constants/api";
-import { BadgeType, UserData } from "../types/user";
-import { mapBadgeToRole, mapRoleToBadge } from "../utils/roleMapper";
-import { buildQueryString } from "../utils/queryString";
+import { UserData } from "../types/user";
 import { useRef, useState } from "react";
 import { api } from "../api/baseApi";
+import { Role } from "./useUserRoles";
 
 interface APIResponse {
   data: UserData[];
@@ -18,7 +16,14 @@ interface APIResponse {
   };
 }
 
-const PAGE_SIZE = 10;
+interface FetchUsersParams {
+  search?: string;
+  roles?: Role[];
+  page?: number;
+  limit?: number;
+}
+
+const DEFAULT_LIMIT = 10;
 
 export const cache = new Map<string, APIResponse>();
 
@@ -26,52 +31,82 @@ export const useUsers = () => {
   const [users, setUsers] = useState<UserData[]>([]);
   const [total, setTotal] = useState(0);
   const [page, setPage] = useState(1);
+  const [limit, setLimit] = useState(DEFAULT_LIMIT);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<Error | null>(null);
-  const [hasSearched, setHasSearched] = useState(false);
-  const [lastQuery, setLastQuery] = useState("");
-  const [activeRole, setActiveRole] = useState<BadgeType | null>(null);
+  const [hasSearchedOnce, setHasSearchedOnce] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [activeRoles, setActiveRoles] = useState<Role[]>([]);
+  const [totalPages, setTotalPages] = useState(0);
+  const [hasMore, setHasMore] = useState(false);
+  const [hasPrev, setHasPrev] = useState(false);
   const abortRef = useRef<AbortController | null>(null);
 
-  const fetchUsers = async (
-    query: string,
-    pageNumber = 1,
-    roleFilter: BadgeType | null = activeRole
-  ) => {
+  const applyResponse = (response: APIResponse) => {
+    setUsers(response.data);
+    setTotal(response.pagination.total);
+    setTotalPages(response.pagination.totalPages);
+    setHasMore(response.pagination.hasMore);
+    setHasPrev(response.pagination.hasPrev);
+  };
+
+  const fetchUsers = async (params?: FetchUsersParams) => {
     abortRef.current?.abort();
     const controller = new AbortController();
     abortRef.current = controller;
 
-    setHasSearched(true);
+    // use current state if no new params, this allows partial updates
+    const search = params?.search !== undefined ? params.search : searchQuery;
+    const roles = params?.roles !== undefined ? params.roles : activeRoles;
+    const pageNum = params?.page !== undefined ? params.page : page;
+    const pageLimit = params?.limit !== undefined ? params.limit : limit;
+
+    setHasSearchedOnce(true);
     setLoading(true);
     setError(null);
-    setLastQuery(query);
-    setPage(pageNumber);
+    setSearchQuery(search);
+    setActiveRoles(roles);
+    setPage(pageNum);
+    setLimit(pageLimit);
 
     try {
-      const { data } = await api.get("/users", { signal: controller.signal });
+      // Build query params
+      const queryParams = new URLSearchParams();
+      if (search) queryParams.append("search", search);
 
-      // // check cache first
-      // const cached = cache.get(url);
+      if (roles?.length) {
+        queryParams.append("roles", roles.join(","));
+      }
+      queryParams.append("page", pageNum.toString());
+      queryParams.append("limit", pageLimit.toString());
 
-      // if (cached) {
-      //   setTotal(cached.pagination.total);
-      //   setUsers(cached.data);
-      //   setLoading(false);
-      //   return;
-      // }
+      console.log("queryParams:", queryParams.toString());
 
-      // const res = await fetch(url, { signal: controller.signal });
-      // if (!res.ok) throw new Error(res.statusText);
+      const url = `/users?${queryParams.toString()}`;
 
-      // const data: APIResponse = await res.json();
+      // Check cache first
+      const cached = cache.get(url);
+      if (cached) {
+        applyResponse(cached);
+        setLoading(false);
+        return;
+      }
 
-      setUsers(data.data);
-      setTotal(data.pagination.total);
-      // cache.set(url, { ...data, data: data.data });
+      const { data: response } = await api.get<APIResponse>(url, {
+        signal: controller.signal
+      });
+
+      if (controller.signal.aborted) return;
+
+      applyResponse(response);
+
+      // Cache the result
+      cache.set(url, response);
     } catch (e: unknown) {
       if (e instanceof Error && e.name !== "AbortError") {
         setError(e);
+        setUsers([]);
+        setTotal(0);
       }
     } finally {
       if (!controller.signal.aborted) {
@@ -80,37 +115,52 @@ export const useUsers = () => {
     }
   };
 
-  const nextPage = () => fetchUsers(lastQuery, page + 1, activeRole);
-  const prevPage = () => fetchUsers(lastQuery, page - 1, activeRole);
-
-  const setFilterByTag = (tag: BadgeType) => {
-    setActiveRole(tag);
-    fetchUsers(lastQuery, 1, tag);
+  const nextPage = () => {
+    if (hasMore) {
+      fetchUsers({ page: page + 1 });
+    }
   };
 
-  const resetAndFetch = () => {
-    setActiveRole(null);
-    fetchUsers("", 1, null);
+  const prevPage = () => {
+    if (hasPrev) {
+      fetchUsers({ page: page - 1 });
+    }
   };
 
-  const searchAndFetch = (query: string) => {
-    setActiveRole(null);
-    fetchUsers(query, 1, null);
+  const setRoleFilters = (roles: Role[]) => {
+    fetchUsers({ roles, page: 1 });
+  };
+
+  const searchUsers = (search: string) => {
+    fetchUsers({ search, page: 1 });
+  };
+
+  const resetFilters = () => {
+    fetchUsers({
+      search: "",
+      roles: [],
+      page: 1
+    });
   };
 
   return {
     users,
     loading,
     error,
-    hasSearched,
+    hasSearchedOnce,
     page,
+    limit,
     total,
+    totalPages,
+    hasMore,
+    hasPrev,
+    searchQuery,
+    activeRoles,
     fetchUsers,
     nextPage,
     prevPage,
-    activeRole,
-    setFilterByTag,
-    resetAndFetch,
-    searchAndFetch
+    setRoleFilters,
+    searchUsers,
+    resetFilters
   };
 };

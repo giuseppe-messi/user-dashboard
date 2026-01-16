@@ -1,17 +1,16 @@
+-- CreateEnum
+CREATE TYPE "Role" AS ENUM ('OWNER', 'ADMIN', 'EDITOR', 'VIEWER', 'GUEST');
+
 -- CreateTable
 CREATE TABLE "User" (
     "id" TEXT NOT NULL,
     "firstName" TEXT NOT NULL,
     "lastName" TEXT NOT NULL,
-    "role" TEXT NOT NULL,
-    "team" TEXT,
-    "website" TEXT,
+    "role" "Role" NOT NULL,
+    "position" TEXT NOT NULL,
+    "team" TEXT NOT NULL,
     "email" TEXT NOT NULL,
-    "otherDetails" TEXT,
-    "avatar" TEXT NOT NULL,
-    "avatarBG" TEXT NOT NULL,
-    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "updatedAt" TIMESTAMP(3) NOT NULL,
+    "details" TEXT NOT NULL,
 
     CONSTRAINT "User_pkey" PRIMARY KEY ("id")
 );

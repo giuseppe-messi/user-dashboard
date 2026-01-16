@@ -15,24 +15,40 @@ const Home: React.FC = () => {
     users,
     loading,
     error,
-    hasSearched,
+    hasSearchedOnce,
     nextPage,
     prevPage,
     page,
     total,
-    activeRole,
-    setFilterByTag,
-    resetAndFetch,
-    searchAndFetch
+    activeRoles,
+    resetFilters,
+    setRoleFilters,
+    searchUsers
   } = useUsers();
 
-  const { selectedUser, isOpen, openModal, closeModal } = useUserModal();
-  const noResults = !loading && hasSearched && users.length === 0;
-  const hasResults = users.length > 0;
+  const { selectedUserIndex, isOpen, openModal, closeModal } = useUserModal();
+  const noResults = !loading && hasSearchedOnce && users.length === 0;
+  const hasResults = users.length > 0 && !loading;
+  const hasNextUserInModal =
+    selectedUserIndex !== null && selectedUserIndex < users.length - 1;
+  const hasPrevUserInModal =
+    selectedUserIndex !== null && selectedUserIndex > 0;
 
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   }, [page]);
+
+  const nextUserInModal = () => {
+    if (hasNextUserInModal) {
+      openModal(selectedUserIndex + 1);
+    }
+  };
+
+  const prevUserInModal = () => {
+    if (hasPrevUserInModal) {
+      openModal(selectedUserIndex - 1);
+    }
+  };
 
   return (
     <div className={styles.container}>
@@ -44,12 +60,12 @@ const Home: React.FC = () => {
           <span className={styles.gradient}>User</span> Dashboard
         </h1>
 
-        <SearchBar onSearch={searchAndFetch} onResetFetch={resetAndFetch} />
+        <SearchBar onSearch={searchUsers} onResetFetch={resetFilters} />
       </section>
 
       <section className={styles.usersSection} aria-label="user results">
-        {hasResults && (
-          <FilterBar activeRole={activeRole} onFilterByTag={setFilterByTag} />
+        {hasSearchedOnce && (
+          <FilterBar activeRoles={activeRoles} onRoleFilters={setRoleFilters} />
         )}
         {loading && (
           <div
@@ -83,8 +99,15 @@ const Home: React.FC = () => {
       )}
 
       <Modal isOpen={isOpen} onClose={closeModal}>
-        {selectedUser && (
-          <UserDetailsModal user={selectedUser} onClose={closeModal} />
+        {selectedUserIndex !== null && (
+          <UserDetailsModal
+            user={users[selectedUserIndex]}
+            onClose={closeModal}
+            onNextUser={nextUserInModal}
+            onPrevUser={prevUserInModal}
+            hasNextUser={hasNextUserInModal}
+            hasPrevUser={hasPrevUserInModal}
+          />
         )}
       </Modal>
     </div>
