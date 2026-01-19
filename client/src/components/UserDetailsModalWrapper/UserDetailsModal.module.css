@@ -12,6 +12,11 @@
   padding-bottom: var(--gap-l);
 }
 
+.editingWrapCloseButtonBadge {
+  display: flex;
+  justify-content: end;
+}
+
 .closeButton {
   font-size: 24px;
   font-weight: var(--font-weight-bold);
@@ -100,5 +105,58 @@
   gap: var(--gap-s);
   border-top: 1px solid var(--color-border);
   padding-top: var(--gap-xl);
-  margin-top: var(--gap-xl);
+}
+
+.editRow {
+  display: flex;
+  align-items: center;
+  gap: var(--gap-s);
+}
+
+.inlineInput {
+  border: none;
+  background: transparent;
+  font-size: inherit;
+  font-weight: inherit;
+  color: inherit;
+  width: auto;
+  min-width: 80px;
+}
+
+.inlineSubInput {
+  border: none;
+  background: transparent;
+  font-size: inherit;
+  color: inherit;
+  width: 100%;
+}
+
+.valueInput {
+  border: none;
+  background: transparent;
+  width: 100%;
+  color: inherit;
+}
+
+.valueTextarea {
+  width: 100%;
+  min-height: 80px;
+  border: none;
+  background: transparent;
+  resize: vertical;
+  font-family: inherit;
+}
+
+.inputLabel {
+  display: flex;
+  flex-direction: column;
+  font-weight: var(--font-weight-regular);
+  font-size: var(--text-s-size);
+}
+
+.selectLabel {
+  display: flex;
+  align-items: center;
+  font-size: var(--text-s-size);
+  gap: var(--space-10);
 }

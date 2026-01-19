@@ -25,7 +25,7 @@ interface FetchUsersParams {
 
 const DEFAULT_LIMIT = 10;
 
-export const cache = new Map<string, APIResponse>();
+// export const cache = new Map<string, APIResponse>();
 
 export const useUsers = () => {
   const [users, setUsers] = useState<UserData[]>([]);
@@ -80,17 +80,15 @@ export const useUsers = () => {
       queryParams.append("page", pageNum.toString());
       queryParams.append("limit", pageLimit.toString());
 
-      console.log("queryParams:", queryParams.toString());
-
       const url = `/users?${queryParams.toString()}`;
 
       // Check cache first
-      const cached = cache.get(url);
-      if (cached) {
-        applyResponse(cached);
-        setLoading(false);
-        return;
-      }
+      // const cached = cache.get(url);
+      // if (cached) {
+      //   applyResponse(cached);
+      //   setLoading(false);
+      //   return;
+      // }
 
       const { data: response } = await api.get<APIResponse>(url, {
         signal: controller.signal
@@ -101,7 +99,7 @@ export const useUsers = () => {
       applyResponse(response);
 
       // Cache the result
-      cache.set(url, response);
+      // cache.set(url, response);
     } catch (e: unknown) {
       if (e instanceof Error && e.name !== "AbortError") {
         setError(e);

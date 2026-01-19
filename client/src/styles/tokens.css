@@ -1,6 +1,7 @@
 :root {
   /* Colors */
   --color-orange: #fb6232;
+  --color-dark-orange: #fa5420;
   --color-admin: #003569;
   --color-editor: #269085;
   --color-viewer: #5993b9;
@@ -18,10 +19,18 @@
   --color-text-primary: #222222;
   --color-background: #eeeeee;
 
+  /* Toaster component aliases */
+  --space-sm: var(--space-16);
+  --app-radius: var(--radius-card);
+  --color-light-green: #d1f2e5;
+  --color-light-red: #f8d7da;
+  --color-light-yellow: #fff3cd;
+
   /* Radius */
   --radius-card: 20px;
   --radius-badge: 8px;
   --radius-button: 20px;
+  --radius-input: 10px;
 
   /* Spacing scale */
   --space-4: 4px;

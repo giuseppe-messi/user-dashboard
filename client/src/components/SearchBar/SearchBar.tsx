@@ -43,7 +43,7 @@ export const SearchBar = ({ onSearch, onResetFetch }: SearchBarProps) => {
         />
         <button
           type="button"
-          className={`button-l ${styles.searchButton}`}
+          className={`button button-l ${styles.searchButton}`}
           onClick={handleSearch}
         >
           Search

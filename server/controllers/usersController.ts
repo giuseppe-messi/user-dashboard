@@ -22,6 +22,21 @@ const GetUsersQuery = z.object({
     .default(DEFAULT_PAGE_SIZE)
 });
 
+const postUserBody = z.object({
+  firstName: z.string().min(1).max(100),
+  lastName: z.string().min(1).max(100),
+  email: z.email().max(255),
+  role: z.enum(Role),
+  position: z.string().max(100),
+  team: z.string().max(100),
+  details: z.string()
+});
+
+const putUserBody = postUserBody.extend({
+  id: z.string()
+});
+
+type PostUserBodyType = z.infer<typeof postUserBody>;
 type GetUsersQueryType = z.infer<typeof GetUsersQuery>;
 
 export const usersController = (app: Express) => {
@@ -104,6 +119,113 @@ export const usersController = (app: Express) => {
       });
     } catch (err) {
       console.error("Error fetching users:", err);
+      res.status(500).json({ error: "Internal server error" });
+    }
+  });
+
+  app.post("/users", async (req, res) => {
+    const parsed = postUserBody.safeParse(req.body);
+
+    if (!parsed.success) {
+      return res.status(400).json({
+        error: "Invalid request body",
+        details: parsed.error.issues
+      });
+    }
+
+    const { firstName, lastName, email, role, position, team, details } =
+      parsed.data as PostUserBodyType;
+
+    const existingUser = await prisma.user.findUnique({
+      where: { email }
+    });
+
+    if (existingUser) {
+      return res
+        .status(409)
+        .json({ error: "User with this email already exists" });
+    }
+
+    try {
+      const newUser = await prisma.user.create({
+        data: {
+          firstName,
+          lastName,
+          email,
+          role,
+          position,
+          team,
+          details
+        }
+      });
+      res.status(201).json(newUser);
+    } catch (err) {
+      console.error("Error creating user:", err);
+      res.status(500).json({ error: "Internal server error" });
+    }
+  });
+
+  app.put("/users/:id", async (req, res) => {
+    const { id } = req.params;
+
+    const parsed = putUserBody.safeParse({ ...req.body, id });
+
+    if (!parsed.success) {
+      return res.status(400).json({
+        error: "Invalid request body",
+        details: parsed.error.issues
+      });
+    }
+
+    const { firstName, lastName, email, role, position, team, details } =
+      parsed.data as z.infer<typeof putUserBody>;
+
+    const existingUser = await prisma.user.findUnique({
+      where: { email }
+    });
+
+    if (!existingUser) {
+      return res.status(404).json({ error: "User not found" });
+    }
+
+    try {
+      const updatedUser = await prisma.user.update({
+        where: { email },
+        data: {
+          firstName,
+          lastName,
+          role,
+          position,
+          team,
+          details
+        }
+      });
+      res.status(200).json(updatedUser);
+    } catch (err) {
+      console.error("Error updating user:", err);
+      res.status(500).json({ error: "Internal server error" });
+    }
+  });
+
+  app.delete("/users/:id", async (req, res) => {
+    const { id } = req.params;
+
+    try {
+      const existingUser = await prisma.user.findUnique({
+        where: { id }
+      });
+
+      if (!existingUser) {
+        return res.status(404).json({ error: "User not found" });
+      }
+
+      await prisma.user.delete({
+        where: { id }
+      });
+
+      res.status(204).send();
+    } catch (err) {
+      console.error("Error deleting user:", err);
       res.status(500).json({ error: "Internal server error" });
     }
   });

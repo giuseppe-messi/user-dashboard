@@ -4,11 +4,15 @@ import { SearchBar } from "../../components/SearchBar/SearchBar";
 import { FilterBar } from "../../components/FilterBar/FilterBar";
 import { UserGrid } from "../../components/UserGrid/UserGrid";
 import { Modal } from "../../components/Modal/Modal";
-import { UserDetailsModal } from "../../components/UserDetailsModal/UserDetailsModal";
 import { Pagination } from "../../components/Pagination/Pagination";
 import { useUserModal } from "../../hooks/useUserModal";
 import { useUsers } from "../../hooks/useUsers";
 import { LoadingSpinner } from "../../components/LoadingSpinner/LoadingSpinner";
+import { UserDetailsModalWrapper } from "../../components/UserDetailsModalWrapper/UserDetailsModalWrapper";
+import { Toaster } from "@react-lab-mono/ui";
+import { useUpdateUser } from "../../hooks/useUpdateUser";
+import { UserData } from "../../types/user";
+import { useDeleteUser } from "../../hooks/useDeleteUser";
 
 const Home: React.FC = () => {
   const {
@@ -23,9 +27,11 @@ const Home: React.FC = () => {
     activeRoles,
     resetFilters,
     setRoleFilters,
-    searchUsers
+    searchUsers,
+    fetchUsers
   } = useUsers();
-
+  const { updateUser, loading: updateLoading } = useUpdateUser();
+  const { deleteUser, loading: deleteLoading } = useDeleteUser();
   const { selectedUserIndex, isOpen, openModal, closeModal } = useUserModal();
   const noResults = !loading && hasSearchedOnce && users.length === 0;
   const hasResults = users.length > 0 && !loading;
@@ -33,10 +39,21 @@ const Home: React.FC = () => {
     selectedUserIndex !== null && selectedUserIndex < users.length - 1;
   const hasPrevUserInModal =
     selectedUserIndex !== null && selectedUserIndex > 0;
+  const isMutatingUser = updateLoading || deleteLoading;
 
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   }, [page]);
+
+  const handleUpdateUser = async (user: UserData) => {
+    await updateUser(user);
+    fetchUsers();
+  };
+
+  const handleDeleteUser = async (id: string) => {
+    await deleteUser(id);
+    fetchUsers();
+  };
 
   const nextUserInModal = () => {
     if (hasNextUserInModal) {
@@ -100,16 +117,21 @@ const Home: React.FC = () => {
 
       <Modal isOpen={isOpen} onClose={closeModal}>
         {selectedUserIndex !== null && (
-          <UserDetailsModal
+          <UserDetailsModalWrapper
             user={users[selectedUserIndex]}
             onClose={closeModal}
             onNextUser={nextUserInModal}
             onPrevUser={prevUserInModal}
             hasNextUser={hasNextUserInModal}
             hasPrevUser={hasPrevUserInModal}
+            onSaveUser={handleUpdateUser}
+            onDeleteUser={handleDeleteUser}
+            onLoading={isMutatingUser}
           />
         )}
       </Modal>
+
+      <Toaster />
     </div>
   );
 };

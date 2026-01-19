@@ -38,7 +38,7 @@ export const UserCard = ({ user, onViewDetails }: UserCardProps) => {
         </a>
       </div>
 
-      <button type="button" className="button-m" onClick={onViewDetails}>
+      <button type="button" className="button button-m" onClick={onViewDetails}>
         View details
       </button>
     </article>
