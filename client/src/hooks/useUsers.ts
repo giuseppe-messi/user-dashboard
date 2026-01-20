@@ -99,11 +99,11 @@ export const useUsers = () => {
       // Cache the result
       // cache.set(url, response);
     } catch (e: unknown) {
-      if (e instanceof Error && e.name !== "AbortError") {
-        setError(e);
-        setUsers([]);
-        setTotal(0);
-      }
+      if (controller.signal.aborted) return;
+
+      setError(e as Error);
+      setUsers([]);
+      setTotal(0);
     } finally {
       if (!controller.signal.aborted) {
         setLoading(false);
