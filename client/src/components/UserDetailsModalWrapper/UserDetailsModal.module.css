@@ -160,3 +160,27 @@
   font-size: var(--text-s-size);
   gap: var(--space-10);
 }
+
+@media (max-width: 400px) {
+  .wrapCloseButtonBadge {
+    flex-direction: column-reverse;
+    gap: var(--gap-l);
+  }
+
+  .wrapCloseButtonBadge > :global(.badge) {
+    width: 100%;
+  }
+
+  .editingWrapCloseButtonBadge {
+    justify-content: center;
+  }
+
+  .modalContent :global(.input),
+  .modalContent :global(.select) {
+    height: 30px;
+  }
+
+  .modalContent {
+    gap: var(--gap-l);
+  }
+}

@@ -1,158 +1,162 @@
-import { describe, it, expect, vi, beforeEach, type Mock } from "vitest";
+import { describe, it, expect, vi } from "vitest";
 import { renderHook, act } from "@testing-library/react";
 import { useUsers } from "../hooks/useUsers";
 import { mockUser } from "../test/mocks/sharedMocks";
-import { API_ENDPOINTS } from "../constants/api";
-import { cache } from "../hooks/useUsers";
+import { api } from "../api/baseApi";
 
-const mockResponse = {
-  users: [mockUser],
-  total: 1,
-  skip: 0,
-  limit: 10
+const mockApiResponse = {
+  data: [mockUser],
+  pagination: {
+    total: 1,
+    page: 1,
+    limit: 10,
+    skip: 0,
+    totalPages: 1,
+    hasMore: true,
+    hasPrev: false
+  }
 };
 
 describe("useUsers hook", () => {
-  beforeEach(() => {
-    cache.clear();
+  afterEach(() => {
+    vi.clearAllMocks();
     vi.restoreAllMocks();
-
-    global.fetch = vi.fn().mockResolvedValue({
-      ok: true,
-      json: () => Promise.resolve(mockResponse)
-    }) as never;
   });
 
-  it("should have initial state", () => {
+  it("fetches users", async () => {
+    vi.spyOn(api, "get").mockResolvedValue({ data: mockApiResponse });
+
     const { result } = renderHook(() => useUsers());
 
+    await act(async () => result.current.fetchUsers());
+
+    expect(result.current.users).toEqual([mockUser]);
+    expect(result.current.total).toBe(1);
+    expect(result.current.loading).toBe(false);
+  });
+
+  it("handles non-abort error", async () => {
+    vi.spyOn(api, "get").mockRejectedValue(new Error("Boom"));
+
+    const { result } = renderHook(() => useUsers());
+
+    await act(async () => result.current.fetchUsers());
+
+    expect(result.current.error).toBeInstanceOf(Error);
     expect(result.current.users).toEqual([]);
-    expect(result.current.loading).toBe(false);
+    expect(result.current.total).toBe(0);
+  });
+
+  it("ignores AbortError", async () => {
+    vi.spyOn(api, "get").mockRejectedValue(
+      new DOMException("Aborted", "AbortError")
+    );
+
+    const { result } = renderHook(() => useUsers());
+
+    await act(async () => result.current.fetchUsers());
+
     expect(result.current.error).toBeNull();
-    expect(result.current.hasSearched).toBe(false);
-    expect(result.current.page).toBe(1);
-    expect(result.current.activeRole).toBeNull();
   });
+  it("ignores response resolved after abort", async () => {
+    const mockApiResponse2 = {
+      ...mockApiResponse,
+      data: [{ ...mockUser, id: "2" }]
+    };
 
-  it("should fetch users successfully", async () => {
+    let resolveFirst: (v: { data: typeof mockApiResponse }) => void;
+
+    const firstPromise = new Promise<{ data: typeof mockApiResponse }>(
+      (res) => {
+        resolveFirst = res;
+      }
+    );
+
+    vi.spyOn(api, "get")
+      .mockReturnValueOnce(firstPromise) // first request hangs
+      .mockResolvedValueOnce({ data: mockApiResponse2 }); // second request completes
+
     const { result } = renderHook(() => useUsers());
 
-    await act(async () => {
-      await result.current.fetchUsers("");
+    // Start request 1 and keep its promise so we can await it later
+    let firstFetchPromise: Promise<void>;
+    act(() => {
+      firstFetchPromise = result.current.fetchUsers();
     });
 
-    expect(fetch).toHaveBeenCalled();
-    expect(result.current.users[0].firstName).toBe("John");
-    expect(result.current.total).toBe(1);
-    expect(result.current.hasSearched).toBe(true);
-    expect(result.current.loading).toBe(false);
+    // Start request 2, this aborts request 1
+    await act(async () => {
+      await result.current.fetchUsers();
+    });
+
+    // Now resolve request 1 AFTER it has been aborted
+    await act(async () => {
+      resolveFirst({ data: mockApiResponse });
+    });
+
+    // wait for the first fetchUsers() chain to fully finish
+    await act(async () => {
+      await firstFetchPromise;
+    });
+
+    // Second response should win, proving aborted response was ignored
+    expect(result.current.users).toEqual(mockApiResponse2.data);
   });
 
-  it("should fetch using role filter endpoint", async () => {
+  it("handles pagination", async () => {
+    vi.spyOn(api, "get").mockResolvedValue({ data: mockApiResponse });
+
     const { result } = renderHook(() => useUsers());
 
-    await act(async () => {
-      result.current.setFilterByTag("admin");
-    });
+    await act(async () => result.current.fetchUsers());
+    await act(async () => result.current.nextPage());
 
-    const calledUrl = (fetch as unknown as Mock).mock.calls[0][0];
-
-    expect(calledUrl).toContain(API_ENDPOINTS.usersFilter);
-    expect(result.current.activeRole).toBe("admin");
+    expect(api.get).toHaveBeenCalledTimes(2);
   });
 
-  it("should clear role when searching", async () => {
+  it("handles prev page", async () => {
+    vi.spyOn(api, "get").mockResolvedValue({
+      data: {
+        ...mockApiResponse,
+        pagination: { ...mockApiResponse.pagination, hasPrev: true }
+      }
+    });
+
     const { result } = renderHook(() => useUsers());
 
-    await act(async () => {
-      result.current.setFilterByTag("admin");
-    });
+    await act(async () => result.current.fetchUsers({ page: 2 }));
+    await act(async () => result.current.prevPage());
 
-    expect(result.current.activeRole).toBe("admin");
-
-    await act(async () => {
-      result.current.searchAndFetch("john");
-    });
-
-    expect(result.current.activeRole).toBeNull();
+    expect(api.get).toHaveBeenCalledTimes(2);
   });
 
-  it("should reset filter and fetch all users", async () => {
-    const { result } = renderHook(() => useUsers());
-
-    await act(async () => {
-      result.current.setFilterByTag("admin");
-    });
-
-    await act(async () => {
-      result.current.resetAndFetch();
-    });
-
-    expect(result.current.activeRole).toBeNull();
-    expect(result.current.page).toBe(1);
-  });
-
-  it("should go to next page", async () => {
-    const { result } = renderHook(() => useUsers());
-
-    await act(async () => {
-      result.current.fetchUsers("");
-    });
-
-    await act(async () => {
-      result.current.nextPage();
-    });
-
-    expect(result.current.page).toBe(2);
-  });
-
-  it("should go to previous page", async () => {
-    const { result } = renderHook(() => useUsers());
-
-    await act(async () => {
-      result.current.fetchUsers("", 2);
-    });
-
-    await act(async () => {
-      result.current.prevPage();
-    });
-
-    expect(result.current.page).toBe(1);
-  });
-
-  it("should set error when fetch throws a non-AbortError", async () => {
-    const testError = new Error("Network failure");
-
-    global.fetch = vi.fn().mockRejectedValue(testError) as never;
+  it("handles filters and search", async () => {
+    vi.spyOn(api, "get").mockResolvedValue({ data: mockApiResponse });
 
     const { result } = renderHook(() => useUsers());
 
     await act(async () => {
-      result.current.fetchUsers("");
+      result.current.setRoleFilters(["ADMIN"]);
+      result.current.searchUsers("john");
+      result.current.resetFilters();
     });
 
-    expect(result.current.error).toBe(testError);
-    expect(result.current.loading).toBe(false);
+    expect(api.get).toHaveBeenCalled();
   });
 
-  it("should use cached data on second call", async () => {
+  it("builds query params", async () => {
+    const spy = vi
+      .spyOn(api, "get")
+      .mockResolvedValue({ data: mockApiResponse });
+
     const { result } = renderHook(() => useUsers());
 
-    // first call, fills cache
-    await act(async () => {
-      await result.current.fetchUsers("");
-    });
+    await act(async () =>
+      result.current.fetchUsers({ search: "john", roles: ["ADMIN"] })
+    );
 
-    (fetch as unknown as Mock).mockClear();
-
-    // second call, should hit cache
-    await act(async () => {
-      await result.current.fetchUsers("");
-    });
-
-    expect(fetch).not.toHaveBeenCalled();
-    expect(result.current.users[0].firstName).toBe("John");
-    expect(result.current.total).toBe(1);
-    expect(result.current.loading).toBe(false);
+    const url = spy.mock.calls[0][0];
+    expect(url).toContain("search=john");
+    expect(url).toContain("roles=ADMIN");
   });
 });

@@ -1,26 +1,31 @@
 import { useState } from "react";
 import { UserData } from "../../types/user";
-import { UserDetailsForm } from "./UserDetailsForm";
+import { UserDetailsForm } from "../UserDetailsModalWrapper/UserDetailsForm";
 
-export interface UserDetailsEditProps {
-  user: UserData;
-  onSave: (user: UserData) => void;
+interface CreateUserModalProps {
+  onCreateUser: (user: UserData) => Promise<void>;
   onCancel: () => void;
 }
 
-export const UserDetailsEdit = ({
-  user,
-  onSave,
+export const CreateUserModal = ({
+  onCreateUser,
   onCancel
-}: UserDetailsEditProps) => {
-  const [form, setForm] = useState<UserData>(user);
+}: CreateUserModalProps) => {
+  const [form, setForm] = useState<UserData>({
+    id: "",
+    firstName: "",
+    lastName: "",
+    email: "",
+    role: "GUEST"
+  } as UserData);
 
   const handleChange = (key: keyof UserData, value: string) =>
     setForm({ ...form, [key]: value });
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    onSave(form);
+    onCreateUser(form);
+    onCancel();
   };
 
   return (

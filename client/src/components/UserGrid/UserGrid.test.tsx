@@ -31,7 +31,7 @@ describe("UserGrid component", () => {
     renderComponent();
 
     await user.click(screen.getByText("View details"));
-    expect(mockOnViewDetails).toHaveBeenCalledWith(mockUser);
+    expect(mockOnViewDetails).toHaveBeenCalledWith(0);
   });
 
   it("should render multiple users", () => {

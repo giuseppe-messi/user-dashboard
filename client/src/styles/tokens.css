@@ -22,9 +22,9 @@
   /* Toaster component aliases */
   --space-sm: var(--space-16);
   --app-radius: var(--radius-card);
-  --color-light-green: #d1f2e5;
-  --color-light-red: #f8d7da;
-  --color-light-yellow: #fff3cd;
+  --color-light-green: #00e5a8;
+  --color-light-red: #ff4d6d;
+  --color-light-yellow: #ffd000;
 
   /* Radius */
   --radius-card: 20px;

@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-export const useUserModal = () => {
+export const useUserDetailsModal = () => {
   const [selectedUserIndex, setSelectedUserIndex] = useState<number | null>(
     null
   );

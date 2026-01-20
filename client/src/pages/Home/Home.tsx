@@ -5,7 +5,6 @@ import { FilterBar } from "../../components/FilterBar/FilterBar";
 import { UserGrid } from "../../components/UserGrid/UserGrid";
 import { Modal } from "../../components/Modal/Modal";
 import { Pagination } from "../../components/Pagination/Pagination";
-import { useUserModal } from "../../hooks/useUserModal";
 import { useUsers } from "../../hooks/useUsers";
 import { LoadingSpinner } from "../../components/LoadingSpinner/LoadingSpinner";
 import { UserDetailsModalWrapper } from "../../components/UserDetailsModalWrapper/UserDetailsModalWrapper";
@@ -13,6 +12,10 @@ import { Toaster } from "@react-lab-mono/ui";
 import { useUpdateUser } from "../../hooks/useUpdateUser";
 import { UserData } from "../../types/user";
 import { useDeleteUser } from "../../hooks/useDeleteUser";
+import { CreateUserModal } from "../../components/CreateUserModal/CreateUserModal";
+import { useCreateUserModal } from "../../hooks/useCreateUserModal";
+import { useUserDetailsModal } from "../../hooks/useUserDetailsModal";
+import { usePostUser } from "../../hooks/usePostUser";
 
 const Home: React.FC = () => {
   const {
@@ -32,14 +35,21 @@ const Home: React.FC = () => {
   } = useUsers();
   const { updateUser, loading: updateLoading } = useUpdateUser();
   const { deleteUser, loading: deleteLoading } = useDeleteUser();
-  const { selectedUserIndex, isOpen, openModal, closeModal } = useUserModal();
+  const { createUser, loading: createLoading } = usePostUser();
+  const { selectedUserIndex, isOpen, openModal, closeModal } =
+    useUserDetailsModal();
+  const {
+    isOpen: isCreateUserModalOpen,
+    openModal: openCreateUserModal,
+    closeModal: closeCreateUserModal
+  } = useCreateUserModal();
   const noResults = !loading && hasSearchedOnce && users.length === 0;
   const hasResults = users.length > 0 && !loading;
   const hasNextUserInModal =
     selectedUserIndex !== null && selectedUserIndex < users.length - 1;
   const hasPrevUserInModal =
     selectedUserIndex !== null && selectedUserIndex > 0;
-  const isMutatingUser = updateLoading || deleteLoading;
+  const isMutatingUser = updateLoading || deleteLoading || createLoading;
 
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: "smooth" });
@@ -52,6 +62,11 @@ const Home: React.FC = () => {
 
   const handleDeleteUser = async (id: string) => {
     await deleteUser(id);
+    fetchUsers();
+  };
+
+  const handleCreateUser = async (user: UserData) => {
+    await createUser(user);
     fetchUsers();
   };
 
@@ -82,7 +97,11 @@ const Home: React.FC = () => {
 
       <section className={styles.usersSection} aria-label="user results">
         {hasSearchedOnce && (
-          <FilterBar activeRoles={activeRoles} onRoleFilters={setRoleFilters} />
+          <FilterBar
+            activeRoles={activeRoles}
+            onRoleFilters={setRoleFilters}
+            onOpenCreateUserModal={openCreateUserModal}
+          />
         )}
         {loading && (
           <div
@@ -129,6 +148,13 @@ const Home: React.FC = () => {
             onLoading={isMutatingUser}
           />
         )}
+      </Modal>
+
+      <Modal isOpen={isCreateUserModalOpen} onClose={closeCreateUserModal}>
+        <CreateUserModal
+          onCreateUser={handleCreateUser}
+          onCancel={closeCreateUserModal}
+        />
       </Modal>
 
       <Toaster />

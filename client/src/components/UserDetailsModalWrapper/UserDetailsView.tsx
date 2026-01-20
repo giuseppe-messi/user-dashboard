@@ -1,7 +1,7 @@
 import { UserData } from "../../types/user";
 import styles from "./UserDetailsModal.module.css";
 
-interface Props {
+export interface UserDetailsViewProps {
   user: UserData;
   onClose: () => void;
   onNextUser: () => void;
@@ -21,7 +21,7 @@ export const UserDetailsView = ({
   hasPrevUser,
   onEdit,
   onDelete
-}: Props) => {
+}: UserDetailsViewProps) => {
   return (
     <div className={styles.modalContent}>
       <div className={styles.wrapCloseButtonBadge}>

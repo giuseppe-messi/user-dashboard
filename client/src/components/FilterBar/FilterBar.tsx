@@ -5,9 +5,14 @@ import { LoadingSpinner } from "../LoadingSpinner/LoadingSpinner";
 export interface FilterBarProps {
   activeRoles: Role[];
   onRoleFilters: (roles: Role[]) => void;
+  onOpenCreateUserModal: () => void;
 }
 
-export const FilterBar = ({ activeRoles, onRoleFilters }: FilterBarProps) => {
+export const FilterBar = ({
+  activeRoles,
+  onRoleFilters,
+  onOpenCreateUserModal
+}: FilterBarProps) => {
   const { roles, loading, error } = useUserRoles();
 
   const handleRoleClick = (role: Role) => {
@@ -30,22 +35,28 @@ export const FilterBar = ({ activeRoles, onRoleFilters }: FilterBarProps) => {
 
   return (
     <div className={styles.filterBar}>
-      <span className={`${styles.filterLabel} label`}>FILTER BY:</span>
-      <div className={styles.filterButtons}>
-        {roles.map((role) => (
-          <button
-            type="button"
-            key={role}
-            className={`badge badge-${role.toLowerCase()} ${
-              styles.filterButton
-            } ${activeRoles?.includes(role) ? styles.active : ""}`}
-            onClick={() => handleRoleClick(role)}
-            aria-pressed={activeRoles?.includes(role)}
-          >
-            {role.toUpperCase()}
-          </button>
-        ))}
+      <div className={styles.badgesContainer}>
+        <span className={`${styles.filterLabel} label`}>FILTER BY:</span>
+        <div className={styles.filterButtons}>
+          {roles.map((role) => (
+            <button
+              type="button"
+              key={role}
+              className={`badge badge-${role.toLowerCase()} ${
+                styles.filterButton
+              } ${activeRoles?.includes(role) ? styles.active : ""}`}
+              onClick={() => handleRoleClick(role)}
+              aria-pressed={activeRoles?.includes(role)}
+            >
+              {role.toUpperCase()}
+            </button>
+          ))}
+        </div>
       </div>
+
+      <button className="button button-m" onClick={onOpenCreateUserModal}>
+        Add User
+      </button>
     </div>
   );
 };

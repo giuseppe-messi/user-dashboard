@@ -34,7 +34,7 @@ I also added pagination, since it is always better than showing a very long list
 
 The `useUsers` hook is then used inside `Home.tsx`, where its returned values and methods are passed down to child components.
 
-Another hook is `useUserModal`, which centralises the logic for selecting the user that will be displayed inside the modal popup.
+Another hook is `useUserDetailsModal`, which centralises the logic for selecting the user that will be displayed inside the modal popup.
 
 I always try to think about user experience, so I added different UI states depending on whether the search returned results or not, whether it was a search or a filter, and whether an error occurred.
 

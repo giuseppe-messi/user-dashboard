@@ -1,57 +1,44 @@
 import { vi } from "vitest";
-import { useUserModal } from "../../hooks/useUserModal";
 import { useUsers } from "../../hooks/useUsers";
 import { UserData } from "../../types/user";
+import { useUserDetailsModal } from "../../hooks/useUserDetailsModal";
 
 export const mockUser: UserData = {
+  id: "1",
   firstName: "John",
   lastName: "Doe",
-  age: 30,
-  gender: "male",
-  birthDate: "1994-01-01",
-  height: 180,
-  weight: 75,
-  eyeColor: "blue",
-  hair: { color: "Brown", type: "Straight" },
-  university: "MIT",
-  company: {
-    title: "Software Engineer",
-    name: "Tech Corp",
-    department: "Engineering"
-  },
-  address: {
-    city: "San Francisco",
-    state: "CA",
-    country: "USA"
-  },
-  crypto: {
-    coin: "Bitcoin",
-    network: "Ethereum"
-  },
   email: "john@example.com",
-  role: "admin",
+  role: "ADMIN",
+  position: "Software Engineer",
   team: "Frontend",
-  badgeType: "admin"
+  details: "Senior frontend engineer working on React applications."
 };
 
 export const createUseUsersMock = (): ReturnType<typeof useUsers> => ({
   users: [],
   loading: false,
   error: null,
-  hasSearched: false,
+  hasSearchedOnce: false,
   page: 1,
+  limit: 10,
   total: 0,
-  activeRole: null,
+  totalPages: 0,
+  hasMore: false,
+  hasPrev: false,
+  searchQuery: "",
+  activeRoles: [],
   fetchUsers: vi.fn(async () => {}),
   nextPage: vi.fn(),
   prevPage: vi.fn(),
-  setFilterByTag: vi.fn(),
-  resetAndFetch: vi.fn(),
-  searchAndFetch: vi.fn()
+  setRoleFilters: vi.fn(),
+  searchUsers: vi.fn(),
+  resetFilters: vi.fn()
 });
 
-export const createUseUserModalMock = (): ReturnType<typeof useUserModal> => ({
-  selectedUser: null,
+export const createuseUserDetailsModalMock = (): ReturnType<
+  typeof useUserDetailsModal
+> => ({
+  selectedUserIndex: null,
   isOpen: false,
   openModal: vi.fn(),
   closeModal: vi.fn()

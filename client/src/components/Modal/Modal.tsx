@@ -18,6 +18,7 @@ export const Modal = ({ isOpen, onClose, children }: ModalProps) => {
     dialogRef.current?.focus();
 
     const onKeyDown = (e: KeyboardEvent) => {
+      e.stopPropagation();
       if (e.key === "Escape") {
         onClose();
       }
