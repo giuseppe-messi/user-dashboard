@@ -56,12 +56,16 @@ export const usersController = (app: Express) => {
       const filters: Prisma.UserWhereInput[] = [];
 
       if (search?.length) {
+        const terms = search.trim().split(/\s+/);
+
         filters.push({
-          OR: [
-            { firstName: { contains: search, mode: "insensitive" } },
-            { lastName: { contains: search, mode: "insensitive" } },
-            { email: { contains: search, mode: "insensitive" } }
-          ]
+          AND: terms.map((term) => ({
+            OR: [
+              { firstName: { contains: term, mode: "insensitive" } },
+              { lastName: { contains: term, mode: "insensitive" } },
+              { email: { contains: term, mode: "insensitive" } }
+            ]
+          }))
         });
       }
 
