@@ -1,5 +1,5 @@
 import { UserData } from "../types/user";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { api } from "../api/baseApi";
 import { Role } from "./useUserRoles";
 
@@ -34,7 +34,6 @@ export const useUsers = () => {
   const [limit, setLimit] = useState(DEFAULT_LIMIT);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<Error | null>(null);
-  const [hasSearchedOnce, setHasSearchedOnce] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [activeRoles, setActiveRoles] = useState<Role[]>([]);
   const [totalPages, setTotalPages] = useState(0);
@@ -61,7 +60,6 @@ export const useUsers = () => {
     const pageNum = params?.page !== undefined ? params.page : page;
     const pageLimit = params?.limit !== undefined ? params.limit : limit;
 
-    setHasSearchedOnce(true);
     setLoading(true);
     setError(null);
     setSearchQuery(search);
@@ -113,6 +111,18 @@ export const useUsers = () => {
     }
   };
 
+  useEffect(() => {
+    fetchUsers();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  // Prevent state updates after unmounting
+  useEffect(() => {
+    return () => {
+      abortRef.current?.abort();
+    };
+  }, []);
+
   const nextPage = () => {
     if (hasMore) {
       fetchUsers({ page: page + 1 });
@@ -145,7 +155,6 @@ export const useUsers = () => {
     users,
     loading,
     error,
-    hasSearchedOnce,
     page,
     limit,
     total,

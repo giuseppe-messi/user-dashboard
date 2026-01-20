@@ -22,7 +22,6 @@ const Home: React.FC = () => {
     users,
     loading,
     error,
-    hasSearchedOnce,
     nextPage,
     prevPage,
     page,
@@ -43,7 +42,7 @@ const Home: React.FC = () => {
     openModal: openCreateUserModal,
     closeModal: closeCreateUserModal
   } = useCreateUserModal();
-  const noResults = !loading && hasSearchedOnce && users.length === 0;
+  const noResults = !loading && users.length === 0;
   const hasResults = users.length > 0 && !loading;
   const hasNextUserInModal =
     selectedUserIndex !== null && selectedUserIndex < users.length - 1;
@@ -96,13 +95,11 @@ const Home: React.FC = () => {
       </section>
 
       <section className={styles.usersSection} aria-label="user results">
-        {hasSearchedOnce && (
-          <FilterBar
-            activeRoles={activeRoles}
-            onRoleFilters={setRoleFilters}
-            onOpenCreateUserModal={openCreateUserModal}
-          />
-        )}
+        <FilterBar
+          activeRoles={activeRoles}
+          onRoleFilters={setRoleFilters}
+          onOpenCreateUserModal={openCreateUserModal}
+        />
         {loading && (
           <div
             className={styles.loadingContainer}
@@ -114,7 +111,7 @@ const Home: React.FC = () => {
         )}
         {error && (
           <p role="alert" aria-live="assertive">
-            Error: {error.message}
+            Something went wrong! Try again later!
           </p>
         )}
         {noResults && (
