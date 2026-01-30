@@ -8,7 +8,7 @@ const port = process.env.PORT || "3000";
 
 export const allowedOrigins = [
   "http://localhost:5173",
-  "https://user-dashboard-main.netlify.app/" // the client in pro
+  "https://user-dashboard-main.netlify.app" // the client in pro
 ];
 
 const app = express();
