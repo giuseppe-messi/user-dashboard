@@ -1,0 +1,31 @@
+// prisma/schema.prisma
+// Define your database models
+
+generator client {
+    provider = "prisma-client-js"
+    output   = "../generated/prisma"
+}
+
+datasource db {
+    provider = "postgresql"
+    url      = env("DATABASE_URL")
+}
+
+enum Role {
+    OWNER
+    ADMIN
+    EDITOR
+    VIEWER
+    GUEST
+}
+
+model User {
+    id        String @id @default(cuid())
+    firstName String
+    lastName  String
+    role      Role
+    position  String
+    team      String
+    email     String @unique
+    details   String
+}
