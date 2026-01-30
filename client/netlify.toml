@@ -2,7 +2,7 @@
   # Base directory
   base = "client"
   # Build command
-  command = "pnpm install && pnpm run build"
+  command = "pnpm install --no-frozen-lockfile && pnpm run build"
   # Directory with the build output
   publish = "dist"
 
